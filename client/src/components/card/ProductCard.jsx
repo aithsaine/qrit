@@ -10,13 +10,13 @@ const ProductCard = ({ image, name, price, totalSales=0, onDelete, onModify }) =
   };
 
   return (
-    <div className="relative bg-white shadow-lg rounded-lg overflow-hidden p-4 flex items-center max-w-4xl">
+    <div className="relative  bg-white shadow-lg rounded-lg overflow-hidden p-4 flex items-center max-w-4xl">
       {/* Product Image */}
       <img src={image} alt={name} className="h-32 w-32 object-cover rounded-lg" />
 
       {/* Product Info */}
       <div className="ml-4 flex-1">
-        <h2 className="text-lg font-semibold">{name}</h2>
+        <h2 className="text-lg text-gray-500 font-semibold">{name}</h2>
         <p className="text-gray-500 mt-1">${price}</p>
         <p className="text-gray-500 mt-1 text-xs">Total Sales: {totalSales}</p>
       </div>

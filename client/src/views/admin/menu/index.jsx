@@ -4,6 +4,7 @@ import NewCategoryModal from 'components/category/store';
 import CustomTabView from 'components/tabView';
 import { useDispatch, useSelector } from 'react-redux';
 import { initialiseData } from '../../../redux/actionCreators';
+import NewProductModal from 'components/product/AddProduct';
 
 export default function Menu() {
   const {categories} = useSelector(state=>state)
@@ -28,6 +29,7 @@ export default function Menu() {
     <div className='flex w-full mt-4 flex-col'>
       <div className='flex space-x-2 my-4'>
       <NewCategoryModal/>
+      <NewProductModal/>
         {/* <Button text="Ajouter Un Plat"/> */}
       </div>
       

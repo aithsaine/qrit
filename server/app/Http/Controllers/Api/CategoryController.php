@@ -31,7 +31,7 @@ class CategoryController extends Controller
             return response(["error"=>"somethink went wrong"],501);
 
         }catch(ValidationException $e){
-            return response($e->errors(),500);
+            return response( $e->errors(),500);
         }
     }
 }

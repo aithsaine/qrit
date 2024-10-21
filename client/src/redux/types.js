@@ -6,3 +6,4 @@ export const ADDPRODUCT = "ADDPRODUCT"
 export const DELETEPRODUCT = "DELETECAT"
 
 export const ADDEMPLOYEE = "ADDEMPLOYEE"
+export const ADDTABLE  = "ADDTABLE"

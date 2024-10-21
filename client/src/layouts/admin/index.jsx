@@ -1,15 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
 import routes from "routes.js";
+import { initialiseData } from "../../redux/actionCreators";
+import { useDispatch } from "react-redux";
+import api from "helpers/api";
 
 export default function Admin() {
   const location = useLocation();
   const [open, setOpen] = React.useState(true);
   const [currentRoute, setCurrentRoute] = React.useState("Main Dashboard");
+  const dispatch = useDispatch()
+  const getCategories = async ()=>{
+    try {
+        const {data} = await api.get("/api/home")
+        if(data){
+          dispatch(initialiseData(data))
+        }
+    } catch (error) {
 
+    }
+}
+useEffect(()=>{
+  getCategories()
+  
+
+},[])
   React.useEffect(() => {
     window.addEventListener("resize", () =>
       window.innerWidth < 1200 ? setOpen(false) : setOpen(true)

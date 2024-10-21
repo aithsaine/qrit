@@ -28,8 +28,7 @@ export default function NewEmployeeModal() {
   const store = async () => {
     try {
       const { data } = await api.post(
-        'api/employee/store',
-        { firstname, lastname, cin, phone, birthday, hiring_date: hiringDate, address },
+        'api/employee/store',     { firstname, lastname, cin, phone, birthday, hiring_date: hiringDate, address },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -38,7 +37,7 @@ export default function NewEmployeeModal() {
       );
 
       if (data) {
-        dispatch(addEmployee(data.employee));
+        dispatch(addEmployee(data));
         setFirstname('');
         setLastname('');
         setCin('');

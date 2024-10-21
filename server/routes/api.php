@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
@@ -30,4 +31,9 @@ Route::controller(App\Http\Controllers\Api\HomeController::class)->group(functio
 Route::controller(App\Http\Controllers\Api\EmployeeController::class)->group(function(){
     Route::post("employee/store","store");
     Route::delete("product/{id}/delete","destroy");
+});
+
+//table controller
+Route::controller(App\Http\Controllers\Api\TableController::class)->group(function(){
+    Route::post("table/store","store");
 });

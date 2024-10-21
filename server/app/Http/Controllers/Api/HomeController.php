@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Product;
+use App\Models\Table;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -14,7 +15,8 @@ class HomeController extends Controller
         $products = Product::all();
         $employees = Employee::all();
         $categories = Category::all();
-        return response()->json(["categories"=>$categories,"products"=>$products,"employees"=>$employees]);
+        $tables = Table::all();
+        return response()->json(["categories"=>$categories,"products"=>$products,"employees"=>$employees, "tables"=>$tables]);
     
     }
 

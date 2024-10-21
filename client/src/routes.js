@@ -21,6 +21,7 @@ import {
   MdAdd,
   MdUpdate,
   MdMenuBook,
+  MdOutlinePerson3,
 } from "react-icons/md";
 
 const routes = [
@@ -35,6 +36,13 @@ const routes = [
     layout: "/",
     path: "menu",
     icon: <MdMenuBook className="h-6 w-6" />,
+    secondary: true,
+  },
+  {
+    name: "Employee",
+    layout: "/",
+    path: "employees",
+    icon: <MdOutlinePerson3 className="h-6 w-6" />,
     secondary: true,
   },
  

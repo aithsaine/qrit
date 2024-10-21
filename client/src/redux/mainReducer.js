@@ -1,11 +1,12 @@
-import { ADDCATEGORY, ADDPRODUCT, DELETEPRODUCT, INIITIALISE } from "./types";
+import { ADDCATEGORY, ADDEMPLOYEE, ADDPRODUCT, DELETEPRODUCT, INIITIALISE } from "./types";
 
 
 
 const initialState = {
     categories:[],
     auth:null,
-    products:[]
+    products:[],
+    employees:[]
 }
 
 export default function mainReducer  (state=initialState,action){
@@ -19,6 +20,8 @@ export default function mainReducer  (state=initialState,action){
             return {...state,products:[...state.products,action.payload]}
         case DELETEPRODUCT:
             return {...state,products:state.products.filter(item=>item.id != action.payload)}
+        case ADDEMPLOYEE:
+            return{ ...state,employees:[...state.employees,action.payload]}
     }
     return state;
 

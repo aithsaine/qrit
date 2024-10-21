@@ -25,3 +25,8 @@ Route::controller(App\Http\Controllers\Api\ProductController::class)->group(func
 Route::controller(App\Http\Controllers\Api\HomeController::class)->group(function(){
     Route::get("home","index");
 });
+
+//employee Controller
+Route::controller(App\Http\Controllers\Api\EmployeeController::class)->group(function(){
+    Route::post("employee/store","store");
+});

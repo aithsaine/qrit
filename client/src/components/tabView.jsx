@@ -1,17 +1,32 @@
 import React, { useState } from 'react';
 import { TabView, TabPanel } from 'primereact/tabview';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ProductCard from './card/ProductCard';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
+import api from 'helpers/api';
+import { toast } from 'sonner';
+import { deleteProduct } from '../redux/actionCreators';
 
 export default function CustomTabView({categories}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const {products}= useSelector(state=>state)
+  const dispatch = useDispatch()
+
+const deleteHandler = async (id)=>{
+  try {
+    const {data} = await api.delete(`api/product/${id}/delete`)
+    dispatch(deleteProduct(id))
+      return toast.success(data.message)
+    
+  } catch (error) {
+    return toast.error("somethink went wrong")
+  }
+}
+
   const handleTabChange = (e) => {
     setActiveIndex(e.index);
   };
@@ -38,15 +53,15 @@ export default function CustomTabView({categories}) {
             spaceBetween: 20,
           },
           768: {
-            slidesPerView: 2,
+            slidesPerView: 1,
             spaceBetween: 20,
           },
           1024: {
-            slidesPerView: 3,
+            slidesPerView: 2,
             spaceBetween: 30,
           },
           1280: {
-            slidesPerView: 4,
+            slidesPerView: 3,
             spaceBetween: 40,
           },
         }}
@@ -61,8 +76,7 @@ export default function CustomTabView({categories}) {
           {products.filter(product=>product.category_id==item.id).map(product=>{
             return (
             <SwiperSlide key={product.id}>
-
-              <ProductCard image={`${process.env.REACT_APP_BACKEND_URI}/storage/products/${product?.image}`} name={product?.name} price={product?.price}/>
+              <ProductCard onDelete={deleteHandler}  image={`${process.env.REACT_APP_BACKEND_URI}/storage/products/${product?.image}`} id={product?.id} name={product?.name} price={product?.price}/>
               </SwiperSlide>
             )
           })}

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { FileUpload } from 'primereact/fileupload';
+import { Dropdown } from 'primereact/dropdown';
 import { classNames } from 'primereact/utils';
 import { motion } from 'framer-motion';
 import { Puff } from "react-loading-icons";
@@ -16,7 +18,7 @@ export default function NewProductModal() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
-  const [category, setCategory] = useState(null);
+  const [category, setCategory] = useState("");
   const [image, setImage] = useState(null);
   const [wait, setWait] = useState(false);
   const dispatch = useDispatch();
@@ -26,7 +28,7 @@ export default function NewProductModal() {
 
   // Handle form submission
   const store = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     setWait(true);
     try {
       const { data } = await api.post("api/product/store", 
@@ -35,6 +37,7 @@ export default function NewProductModal() {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
+          
         }
       );
       
@@ -44,25 +47,33 @@ export default function NewProductModal() {
         setDescription('');
         setPrice('');
         setImage(null);
-        setCategory(null);
+        setCategory("");
         return toast.success(data.message);
       }
     } catch (error) {
-      console.log(error);
-      const response = error.response?.data;
-      if (response) {
-        if (response.name) toast.error(response.name[0]);
-        if (response.description) toast.error(response.description[0]);
-        if (response.price) toast.error(response.price[0]);
-        if (response.categoryId) toast.error(response.categoryId[0]);
-        if (response.image) toast.error(response.image[0]);
-      } else {
-        toast.error("Something went wrong");
+      console.log(error)
+      if (error.response.data.name) {
+        return toast.error(error.response.data.name[0]);
       }
+      if (error.response.data.description) {
+        return toast.error(error.response.data.description[0]);
+      }
+      if (error.response.data.price) {
+        return toast.error(error.response.data.price[0]);
+      }
+      if (error.response.data.category) {
+        return toast.error(error.response.data.category[0]);
+      }
+      if (error.response.data.image) {
+        return toast.error(error.response.data.image[0]);
+      }
+      return toast.error("Something went wrong");
     } finally {
       setWait(false);
     }
   };
+
+
 
   // Handle image upload
   const onUpload = (e) => setImage(e.files[0]);
@@ -78,8 +89,7 @@ export default function NewProductModal() {
           onClick={() => setVisible(true)}
         />
       </motion.div>
-
-      {/* Modal */}
+      {/* Smaller Dialog Modal */}
       {visible && (
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -89,53 +99,71 @@ export default function NewProductModal() {
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
         >
           <div className="bg-white rounded-lg shadow-lg p-6 w-[90vw] md:w-[40vw]">
-            <div className="text-center text-sm font-bold text-gray-800 mb-4">
-              Nouveau Produit
-            </div>
-            <form className="p-fluid text-start space-y-2" onSubmit={store}>
-              {/* Product Name Input */}
-              <div className="relative">
-                <label htmlFor="name" className="block text-gray-600 mb-1">Nom du produit</label>
-                <InputText
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full border rounded-lg p-2 shadow-sm"
-                  placeholder="Ex : Café chaud"
-                />
-              </div>
+            <Dialog
+              header="Nouveau Produit"
+              className="text-center text-sm font-bold text-gray-800"
+              visible={visible}
+              onHide={() => {
+                setVisible(false);
+                setName('');
+                setDescription('');
+                setPrice('');
+                setImage(null);
+                setCategory("");
+              }}
+              style={{ width: '40vw' }}
+              breakpoints={{ '960px': '75vw', '641px': '100vw' }}
+            >
+              <form className="p-fluid text-start space-y-2">
+                {/* Product Name Input */}
+                <div className="relative">
+                  <label htmlFor="name" className={classNames('block text-gray-600 mb-1')}>
+                    Nom du produit
+                  </label>
+                  <InputText
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className={classNames('w-full border rounded-lg p-2 shadow-sm')}
+                    placeholder="Ex : Café chaud"
+                  />
+                </div>
 
-              {/* Product Description Input */}
-              <div className="relative">
-                <label htmlFor="description" className="block text-gray-600 mb-1">Description</label>
-                <InputTextarea
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className="w-full border rounded-lg p-2 shadow-sm"
-                  rows={3}
-                  placeholder="Description"
-                />
-              </div>
+                {/* Product Description Input */}
+                <div className="relative">
+                  <label htmlFor="description" className={classNames('block text-gray-600 mb-1')}>
+                    Description
+                  </label>
+                  <InputTextarea
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className={classNames('w-full border rounded-lg p-2 shadow-sm')}
+                    rows={3}
+                    placeholder="Description"
+                  />
+                </div>
 
-              {/* Product Price Input */}
-              <div className="relative">
-                <label htmlFor="price" className="block text-gray-600 mb-1">Prix</label>
-                <InputText
-                  id="price"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  className="w-full border rounded-lg p-2 shadow-sm"
-                  placeholder="Ex : 20.99"
-                />
-              </div>
+                {/* Product Price Input */}
+                <div className="relative">
+                  <label htmlFor="price" className={classNames('block text-gray-600 mb-1')}>
+                    Prix
+                  </label>
+                  <InputText
+                    id="price"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    className={classNames('w-full border rounded-lg p-2 shadow-sm')}
+                    placeholder="Ex : 20.99"
+                  />
+                </div>
 
-              {/* Category Select (TailwindCSS Select) */}
-              <div className="relative">
+                {/* Category Select */}
+                <div className="relative">
                 <label htmlFor="category" className="block text-gray-600 mb-1">Catégorie</label>
                 <select
                   id="category"
-                  value={category?.id}
+                  value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full border rounded-lg p-2 shadow-sm"
                 >
@@ -146,29 +174,32 @@ export default function NewProductModal() {
                 </select>
               </div>
 
-              {/* Product Image Upload */}
-              <div className="relative">
-                <label htmlFor="image" className="block text-gray-600 mb-1">Image</label>
-                <FileUpload
-                  id="image"
-                  name="image[]"
-                  customUpload
-                  accept="image/*"
-                  auto
-                  chooseLabel="Choisir une image"
-                  uploadHandler={onUpload}
-                />
-              </div>
+                {/* Product Image Upload */}
+                <div className="relative">
+                  <label htmlFor="image" className={classNames('block text-gray-600 mb-1')}>
+                    Image
+                  </label>
+                  <FileUpload
+                    id="image"
+                    name="image[]"
+                    customUpload
+                    accept="image/*"
+                    auto
+                    chooseLabel="Choisir une image"
+                    uploadHandler={onUpload}
+                  />
+                </div>
 
-              {/* Submit Button */}
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
-                  type="submit"
-                  label={wait ? <Puff className="w-4 text-center" /> : "Ajouter"}
-                  className="w-full bg-[#EF233C] p-2 h-[40px] flex items-center justify-center text-white font-bold rounded-lg shadow-lg hover:bg-[#D90429] transition-transform duration-300 ease-in-out"
-                />
-              </motion.div>
-            </form>
+                {/* Submit Button */}
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                  onClick={store}
+                    label={wait ? <Puff className='w-4 text-center' /> : "Ajouter"}
+                    className="w-full bg-[#EF233C] p-2 h-[40px] flex items-center justify-center text-white font-bold rounded-lg shadow-lg hover:bg-[#D90429] transition-transform duration-300 ease-in-out"
+                  />
+                </motion.div>
+              </form>
+            </Dialog>
           </div>
         </motion.div>
       )}

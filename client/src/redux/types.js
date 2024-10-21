@@ -2,3 +2,5 @@ export const INIITIALISE = "INITIALISE"
 export const ADDCATEGORY = "ADDCATEGORY"
 
 export const ADDPRODUCT = "ADDPRODUCT"
+
+export const DELETEPRODUCT = "DELETECAT"

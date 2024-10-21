@@ -14,11 +14,11 @@ Route::controller(CategoryController::class)->group(function(){
     Route::get("categories","index");
     Route::post("category/store","store");
 });
-
 //product routes 
 Route::controller(App\Http\Controllers\Api\ProductController::class)->group(function(){
     Route::get("products","index");
     Route::post("product/store","store");
+    Route::delete("product/{id}/delete","destroy");
 });
 
 //home controller

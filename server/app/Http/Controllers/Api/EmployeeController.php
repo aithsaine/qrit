@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -77,6 +78,14 @@ class EmployeeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+         try {
+            $employee = Employee::findOrFail($id); 
+            $employee->delete(); 
+            return response(["message" => "Employee deleted successfully"]);
+        } catch (ModelNotFoundException $e) {
+            return response(["error" => "Employee not found"], 404);
+        } catch (\Exception $e) {
+            return response(["error" => "An error occurred while deleting the employee"], 500);
+        }
     }
 }

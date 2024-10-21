@@ -29,4 +29,5 @@ Route::controller(App\Http\Controllers\Api\HomeController::class)->group(functio
 //employee Controller
 Route::controller(App\Http\Controllers\Api\EmployeeController::class)->group(function(){
     Route::post("employee/store","store");
+    Route::delete("product/{id}/delete","destroy");
 });

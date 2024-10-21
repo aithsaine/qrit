@@ -90,7 +90,7 @@ class ProductController extends Controller
         if($removeImage)
         {
             $product->delete();
-            return response(["message"=>"this category deleted"]);
+            return response(["message"=>"this product deleted"]);
         }
         return response(["error"=>"somethink went wrong"],500);
 

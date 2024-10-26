@@ -27,40 +27,34 @@ import {
 const routes = [
   {
     name: "Main Dashboard",
-    layout: "/",
-    path: "/",
+    layout: "admin",
+    path: "/admin",
     icon: <MdHome className="h-6 w-6" />,
   },
   {
     name: "Menu",
-    layout: "/",
+    layout: "admin",
     path: "menu",
     icon: <MdMenuBook className="h-6 w-6" />,
     secondary: true,
   },
   {
     name: "Employee",
-    layout: "/",
+    layout: "admin",
     path: "employees",
     icon: <MdOutlinePerson3 className="h-6 w-6" />,
     secondary: true,
   },
- 
-  {
-    name: "Data Tables",
-    layout: "/",
-    icon: <MdBarChart className="h-6 w-6" />,
-    path: "data-tables",
-  },
+
   {
     name: "Profile",
-    layout: "/",
+    layout: "admin",
     path: "profile",
     icon: <MdPerson className="h-6 w-6" />,
   },
   {
     name: "Sign Out",
-    layout: "/auth",
+    layout: "admin",
     path: "sign-in",
     icon: <MdLock className="h-6 w-6" />,
   },

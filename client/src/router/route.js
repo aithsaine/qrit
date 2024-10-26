@@ -4,27 +4,32 @@ import Dashboard from "views/admin/default";
 import Employee from "views/admin/employee";
 import Menu from "views/admin/menu";
 import ProfileOverview from "views/admin/profile";
+import SignIn from "views/auth/SignIn";
 
 export const router = createBrowserRouter([
     {
         path:"/",
+        element:<SignIn/>
+    },
+    {
+        path:"/admin",
         element:<Admin/>,
         children:[
             {
-                path:"/",
+                path:"/admin",
                 element:<Dashboard/>
             },
             {
-                path:"/profile",
+                path:"/admin/profile",
                 element:<ProfileOverview/>
             },
             {
-                path:"/menu",
+                path:"/admin/menu",
                 element:<Menu/>
             }
             ,
             {
-                path:"/employees",
+                path:"/admin/employees",
                 element:<Employee/>
             }
         ]

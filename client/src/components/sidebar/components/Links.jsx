@@ -11,17 +11,15 @@ export function SidebarLinks(props) {
   const { routes } = props;
 
   // verifies if routeName is the one active (in browser input)
-  const activeRoute = (routeName) => {
-    if(location.pathname=="\/" && routeName=="\/"){
-      return true
-    }
-    return location.pathname==  `/${routeName}`&&location.pathname.length!==1;
+  const activeRoute = (routeName,layout) => {
+  
+    return location.pathname==  `/${layout}/${routeName}` ||location.pathname ==routeName
   };
 
   const createLinks = (routes) => {
     return routes.map((route, index) => {
       if (
-        route.layout === "/" ||
+        route.layout === "admin" ||
         route.layout === "/auth"
       ) {
         return (
@@ -33,7 +31,7 @@ export function SidebarLinks(props) {
               >
                 <span
                   className={`${
-                    activeRoute(route.path) === true
+                    activeRoute(route?.path,route?.layout) === true
                       ? "font-bold text-[#EF233C]"
                       : "font-medium text-gray-600"
                   }`}
@@ -42,7 +40,7 @@ export function SidebarLinks(props) {
                 </span>
                 <p
                   className={`leading-1 ml-4 flex ${
-                    activeRoute(route.path) === true
+                    activeRoute(route?.path,route?.layout) === true
                       ? "font-bold text-navy-700 dark:text-white"
                       : "font-medium text-gray-600"
                   }`}
@@ -50,7 +48,7 @@ export function SidebarLinks(props) {
                   {route.name}
                 </p>
               </li>
-              {activeRoute(route.path) ? (
+              {activeRoute(route?.path,route?.layout) ? (
                 <div class="absolute right-0 top-px h-9 w-1 rounded-lg bg-[#EF233C] dark:bg-[#EF233C]" />
               ) : null}
             </div>

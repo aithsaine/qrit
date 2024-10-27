@@ -1,18 +1,43 @@
-import React, { useEffect } from "react";
-import { Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Routes, Route, Navigate, useLocation, Outlet, useNavigate } from "react-router-dom";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
 import routes from "routes.js";
-import { initialiseData } from "../../redux/actionCreators";
+import { addAuthUser, initialiseData } from "../../redux/actionCreators";
 import { useDispatch } from "react-redux";
 import api from "helpers/api";
 
 export default function Admin() {
   const location = useLocation();
+  const navigate = useNavigate()
   const [open, setOpen] = React.useState(true);
   const [currentRoute, setCurrentRoute] = React.useState("Main Dashboard");
   const dispatch = useDispatch()
+  const [loading,setLoading] = useState(true)
+
+  async function getUser() {
+    try {
+        const resp = await api.get("api/user")
+        console.log(resp)
+        dispatch(addAuthUser(resp.data?.user))
+        if(resp.data?.user.role ==="admin")
+        {
+          getCategories()
+
+         return setLoading(false)
+        }
+    } catch (error) {
+        if (error.response.data.message == "Unauthenticated.") {
+            setLoading(false)
+            return navigate("/")
+        }
+        setLoading(false)
+        return navigate("/dsqds")
+    }
+}
+
+
   const getCategories = async ()=>{
     try {
         const {data} = await api.get("/api/home")
@@ -24,7 +49,7 @@ export default function Admin() {
     }
 }
 useEffect(()=>{
-  getCategories()
+  getUser()
   
 
 },[])
@@ -63,6 +88,11 @@ useEffect(()=>{
   };
 
   document.documentElement.dir = "ltr";
+
+  if(loading)
+  {
+    return "loading..."
+  }
   return (
     <div className="flex h-full w-full">
       <Sidebar open={open} onClose={() => setOpen(false)} />

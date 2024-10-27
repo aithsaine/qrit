@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Dropdown from "components/dropdown";
 import { FiAlignJustify } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import navbarimage from "assets/img/layout/Navbar.png";
 import { BsArrowBarUp } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
@@ -11,8 +11,32 @@ import {
   IoMdInformationCircleOutline,
 } from "react-icons/io";
 import avatar from "assets/img/avatars/avatar4.png";
+import api from "helpers/api";
+import { toast } from "sonner";
 
 const Navbar = (props) => {
+  const [waitLogout,setWaitLogout] = useState(false)
+  const navigate = useNavigate()
+
+  const logoutHandler = async()=>{
+    try {
+      setWaitLogout(true)
+      const {data} = await api.post("api/logout")
+      if(data.success)
+         {
+          localStorage.removeItem("auth_token")
+          toast.success("you logout with success")
+          return navigate("/")
+         }
+      
+    } catch (error) {
+      console.log(error)
+      
+    }finally{
+      setWaitLogout(false)
+    }
+
+  }
   const { onOpenSidenav, brandText } = props;
   const [darkmode, setDarkmode] = React.useState(false);
 
@@ -191,12 +215,12 @@ const Navbar = (props) => {
                 >
                   Newsletter Settings
                 </a>
-                <a
-                  href=" "
+                <button
+                onClick={logoutHandler}
                   className="mt-3 text-sm font-medium text-red-500 hover:text-red-500 transition duration-150 ease-out hover:ease-in"
                 >
                   Log Out
-                </a>
+                </button>
               </div>
             </div>
           }

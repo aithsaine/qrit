@@ -1,4 +1,5 @@
 import Admin from "layouts/admin";
+import Guest from "layouts/guest";
 import { createBrowserRouter } from "react-router-dom";
 import Dashboard from "views/admin/default";
 import Employee from "views/admin/employee";
@@ -9,7 +10,13 @@ import SignIn from "views/auth/SignIn";
 export const router = createBrowserRouter([
     {
         path:"/",
-        element:<SignIn/>
+        element:<Guest/>,
+        children:[
+            {
+                path:"/",
+                element:<SignIn/>
+            }
+        ]
     },
     {
         path:"/admin",

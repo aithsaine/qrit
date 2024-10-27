@@ -12,7 +12,6 @@ class CategoryController extends Controller
 {
     public function index(){
         $categroies  = Category::all();
-
         return response($categroies);
     }
     public function store (Request $request){

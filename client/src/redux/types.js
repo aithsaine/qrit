@@ -7,3 +7,5 @@ export const DELETEPRODUCT = "DELETECAT"
 
 export const ADDEMPLOYEE = "ADDEMPLOYEE"
 export const ADDTABLE  = "ADDTABLE"
+
+export const ADDAUTHENTICATE = "ADDAUTHENTICATE"

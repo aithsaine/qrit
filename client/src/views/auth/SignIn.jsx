@@ -2,22 +2,38 @@ import React, { useState } from "react";
 import logo from "../../assets/img/logo.png"
 import api from "helpers/api";
 import { csrf } from "helpers/api";
+import { useNavigate } from "react-router-dom";
 export default function SignIn() {
-
-  const { login } = "";
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [wait,setWait] = useState(false)
+  const [errors,setErrors] = useState([])
+  const navigate = useNavigate()
   const handleLogin = async (e) => {
-    e.preventDefault()  
+      e.preventDefault()
       try {
-          await  csrf()
-          await api.post("api/login",{email,password});
-      } catch (error) {
-          console.error('Login error:', error);
-      }
-  };
+          setWait(true);
+          await csrf()
+          const resp = await api.post("api/login", {
+              email, password
+          })
+          if (resp.data.success) {
+            localStorage.setItem("auth_token",resp.data.token)
+            
+            if (resp.data.user.role == "admin") {
+                  return window.location.href="/admin"
+              }
+          }
 
+      } catch (error) {
+          setErrors(error.response.data)
+      }finally {
+        setWait(false);
+      }
+
+
+  };
+  
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
     <div className="sm:mx-auto sm:w-full sm:max-w-sm">

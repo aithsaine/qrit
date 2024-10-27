@@ -1,4 +1,4 @@
-import { ADDCATEGORY, ADDEMPLOYEE, ADDPRODUCT, ADDTABLE, DELETEPRODUCT, INIITIALISE } from "./types"
+import { ADDAUTHENTICATE, ADDCATEGORY, ADDEMPLOYEE, ADDPRODUCT, ADDTABLE, DELETEPRODUCT, INIITIALISE } from "./types"
 
 export const initialiseData = (data)=>{
     return{
@@ -36,5 +36,12 @@ export const addTable = (table)=>{
     return {
         type:ADDTABLE,
         payload:table
+    }
+}
+
+export const addAuthUser = (user)=>{
+    return{
+        type:ADDAUTHENTICATE,
+        payload:user
     }
 }

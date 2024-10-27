@@ -1,4 +1,4 @@
-import { ADDCATEGORY, ADDEMPLOYEE, ADDPRODUCT, ADDTABLE, DELETEPRODUCT, INIITIALISE } from "./types";
+import { ADDAUTHENTICATE, ADDCATEGORY, ADDEMPLOYEE, ADDPRODUCT, ADDTABLE, DELETEPRODUCT, INIITIALISE } from "./types";
 
 
 
@@ -25,6 +25,8 @@ export default function mainReducer  (state=initialState,action){
             return{ ...state,employees:[...state.employees,action.payload]}
         case ADDTABLE:
             return{...state,tables:[...state.tables,action.payload]}
+        case ADDAUTHENTICATE:
+            return {...state,auth:action.payload}
     }
     return state;
 

@@ -22,7 +22,7 @@ class CategoryController extends Controller
             $category->name = $request->name;
             $category->description = $request->description;
             $newImageName = Str::random(6).".".$request->file("image")->getClientOriginalExtension();
-            $save = $request->file('image')->storeAs("categories",$newImageName);
+            $save = $request->file('image')->move(public_path("categories"), $newImageName);
             if($save){
                 $category->image = $newImageName;
                 $category->save();

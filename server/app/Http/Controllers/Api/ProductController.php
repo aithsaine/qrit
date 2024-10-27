@@ -44,7 +44,8 @@ class ProductController extends Controller
             $product->price = $request->price;
             $product->description = $request->description;
             $newImageName = Str::random(6).".".$request->file("image")->getClientOriginalExtension();
-            $save = $request->file('image')->storeAs("products",$newImageName);
+           $save = $request->file('image')->move(public_path("products"), $newImageName);
+
             if($save){
                 $product->image = $newImageName;
                 $product->save();

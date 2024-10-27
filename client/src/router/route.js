@@ -17,15 +17,26 @@ export const router = createBrowserRouter([
         children:[
             {
                 path:"/admin",
-                element:<Dashboard/>
+                element:
+
+
+                <Dashboard/>
+               
             },
             {
                 path:"/admin/profile",
-                element:<ProfileOverview/>
+                element:
+
+                <ProfileOverview/>
+               
             },
             {
                 path:"/admin/menu",
-                element:<Menu/>
+                element:
+
+                
+                <Menu/>
+               
             }
             ,
             {

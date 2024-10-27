@@ -7,6 +7,7 @@ import routes from "routes.js";
 import { addAuthUser, initialiseData } from "../../redux/actionCreators";
 import { useDispatch } from "react-redux";
 import api from "helpers/api";
+import Loading from "components/Loader";
 
 export default function Admin() {
   const location = useLocation();
@@ -91,7 +92,7 @@ useEffect(()=>{
 
   if(loading)
   {
-    return "loading..."
+    return <Loading/>
   }
   return (
     <div className="flex h-full w-full">

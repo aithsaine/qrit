@@ -1,3 +1,4 @@
+import Loading from 'components/Loader'
 import api from 'helpers/api'
 import React, { useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
@@ -30,7 +31,7 @@ export default function Guest() {
         
     })
     if(wait){
-        return "loading..."
+        return <Loading/>
     }
   return (
    <>

@@ -46,12 +46,6 @@ const routes = [
     secondary: true,
   },
 
-  {
-    name: "Profile",
-    layout: "admin",
-    path: "profile",
-    icon: <MdPerson className="h-6 w-6" />,
-  },
  
 
 ];

@@ -42,7 +42,7 @@ export default function EmployeeCard({ employee }) {
   };
 
   return (
-    <div className='relative flex flex-col items-center w-52 h-[230px] border border-gray-300 dark:border-gray-600 rounded-lg shadow-md bg-white dark:bg-gray-800 transition-shadow duration-300 hover:shadow-lg'>
+    <div className='relative flex flex-col items-center w-40 m-1  md:w-52 h-[250px] border border-gray-300 dark:border-gray-600 rounded-lg shadow-md bg-white dark:bg-gray-800 transition-shadow duration-300 hover:shadow-lg'>
       {/* Employee Image */}
       <img 
         src={fakeempimage} 

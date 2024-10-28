@@ -23,13 +23,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(\App\Http\Controllers\Api\CategoryController::class)->group(function(){
     Route::get("categories","index");
     Route::post("category/store","store");
-})->middleware("auth:sanctum");
+});
 //product routes 
 Route::controller(App\Http\Controllers\Api\ProductController::class)->group(function(){
     Route::get("products","index");
     Route::post("product/store","store");
     Route::delete("product/{id}/delete","destroy");
-})->middleware("auth:sanctum");
+});
 
 //home controller
 Route::controller(App\Http\Controllers\Api\HomeController::class)->group(function(){

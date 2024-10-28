@@ -12,7 +12,7 @@ import { MdHome, MdMenuBook } from "react-icons/md";
 export default function EmployeeLayout() {
   const location = useLocation();
   const navigate = useNavigate()
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(window?.innerWidth<200?false:true);
   const [currentRoute, setCurrentRoute] = React.useState("Main Dashboard");
   const dispatch = useDispatch()
   const emp_routes =  [

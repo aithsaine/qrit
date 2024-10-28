@@ -47,10 +47,8 @@ Route::controller(App\Http\Controllers\Api\TableController::class)->group(functi
     Route::post("table/store","store");
 })->middleware("auth:sanctum");
 
-// //order controller
-// Route::controller(App\Http\Controllers\Api\OrderController::class)->group(function(){
-//     Route::post("order/store","store");
-// });
+
+
 Route::controller(App\Http\Controllers\Api\AuthenticationController::class)->group(function(){
     Route::post('/login',"login");
     Route::post("/logout","logout")->middleware("auth:sanctum");
@@ -60,3 +58,8 @@ Route::controller(App\Http\Controllers\Api\AuthenticationController::class)->gro
 Route::controller(App\Http\Controllers\Api\MenuNeededController::class)->group(function(){
     Route::get("menu","index");
 });
+
+//order controller
+Route::controller(App\Http\Controllers\Api\OrderController::class)->group(function(){
+    Route::post("order/create","createOrder");
+    });

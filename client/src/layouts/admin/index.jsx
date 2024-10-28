@@ -20,7 +20,6 @@ export default function Admin() {
   async function getUser() {
     try {
         const resp = await api.get("api/user")
-        console.log(resp)
         dispatch(addAuthUser(resp.data?.user))
         if(resp.data?.user.role ==="admin")
         {

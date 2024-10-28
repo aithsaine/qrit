@@ -33,7 +33,7 @@ const ProductCard = ({ id, image, name, price, totalSales = 0, onDelete, onModif
       {/* Product Image */}
       <div className={`w-20 h-20 ${isHorizontal ? "flex-none" : "w-48 h-48"} rounded-lg overflow-hidden shadow-md`}>
         <img
-          src={`${process.env.REACT_APP_BACKEND_URI}/public/products/${image}`}
+          src={`${process.env.REACT_APP_BACKEND_URI}/products/${image}`}
           alt={name}
           className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
         />

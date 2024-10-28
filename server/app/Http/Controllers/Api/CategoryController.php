@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -25,7 +26,7 @@ class CategoryController extends Controller
             if($save){
                 $category->image = $newImageName;
                 $category->save();
-                return response(["message"=>"category created with success","category"=>$category]);
+                return response(["message"=>"category created with success","category"=>new CategoryResource($category)]);
             }
             return response(["error"=>"somethink went wrong"],501);
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Error;
 use Illuminate\Http\Request;
@@ -49,7 +50,7 @@ class ProductController extends Controller
             if($save){
                 $product->image = $newImageName;
                 $product->save();
-                return response(["message"=>"product created with success","product"=>$product]);
+                return response(["message"=>"product created with success","product"=>new ProductResource($product)]);
             }
             return response(["error"=>"somethink went wrong"],501);
         }catch(ValidationException $e){

@@ -45,7 +45,7 @@ export default function CustomTabView({ categories }) {
             {/* Small Horizontal Cards */}
             <div className="space-y-4">
               {products
-                .filter((pr) => pr.category_id == item.id)
+                .filter((pr) => pr.category == item.id)
                 .map((product) => (
                   <ProductCard
                     key={product.id}

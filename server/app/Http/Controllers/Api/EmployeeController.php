@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class EmployeeController extends Controller
@@ -32,10 +34,14 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         try{
+            $user = new User();
+            $user->name = $request->firstname." ".$request->lastname;
+            $user->email = $request->firstname."-".$request->lastname."@bwise.ma";
+            $user->password = Hash::make("qrit-bwise");
+            $user->save();
             Employee::validate($request);
             $employee = new Employee();
-            $employee->firstname = $request->firstname;
-            $employee->lastname = $request->lastname;
+            $employee->user_id = $user->id;
             $employee->cin = $request->cin;
             $employee->phone = $request->phone;
             $employee->birthday = $request->birthday;
@@ -49,7 +55,7 @@ class EmployeeController extends Controller
         }
     }
 
-    /**
+    /**request
      * Display the specified resource.
      */
     public function show(string $id)

@@ -9,18 +9,21 @@ use Illuminate\Http\Request;
 class Employee extends Model
 {
     use HasFactory;
-    protected $fillable = ["firstname","lastname","cin","phone","birthday","hiting_date","address"];
+    protected $fillable = ["user_id","cin","phone","birthday","hiting_date","address"];
 
     public static function validate(Request $request)
     {
         $request->validate([
-            "firstname"=>"required",
-            "lastname"=>"required",
             "cin"=>"required|unique:employees,cin",
             "phone"=>"required",
             "birthday"=>'required|date',
             "hiring_date"=>"required|date",
             "address"=>"required"
         ]);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

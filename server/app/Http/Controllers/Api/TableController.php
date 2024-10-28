@@ -16,7 +16,6 @@ class TableController extends Controller
             $table = new Table();
             $table->num_table = $request->num_table; 
             $table->save(); 
-            
             return response(["message" => "Table added successfully"]); 
         } catch (ValidationException $error) {
             return response($error->errors(), 500); 

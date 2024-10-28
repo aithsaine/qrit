@@ -69,12 +69,12 @@ export default function NewCategoryModal() {
   // Handle image upload
   const onUpload = (e) => setImage(e.files[0]);
   return (
-    <div className="flex justify-center items-center">
+    <div className=" w-full  justify-center items-center">
       {/* Button to trigger the modal */}
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <Button
           label="Ajouter une catégorie"
-          className="relative py-2 px-6 bg-[#EF233C] text-white font-semibold rounded-lg shadow-lg hover:bg-[#D90429] transition-transform duration-300 ease-in-out"
+          className="relative w-full py-2 px-6 bg-[#EF233C] text-white font-semibold rounded-lg shadow-lg hover:bg-[#D90429] transition-transform duration-300 ease-in-out"
           icon="pi pi-external-link"
           onClick={() => setVisible(true)}
         />

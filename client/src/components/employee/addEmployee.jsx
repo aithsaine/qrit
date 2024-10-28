@@ -37,7 +37,7 @@ export default function NewEmployeeModal() {
       );
 
       if (data) {
-        dispatch(addEmployee(data));
+        dispatch(addEmployee(data.employee));
         setFirstname('');
         setLastname('');
         setCin('');
@@ -83,12 +83,12 @@ export default function NewEmployeeModal() {
   };
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="w-full justify-center items-center">
       {/* Button to trigger the modal */}
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <Button
           label="Add Employee"
-          className="py-2 px-6 bg-[#EF233C] text-white font-semibold rounded-lg shadow-lg hover:bg-[#D90429] transition-transform duration-300 ease-in-out"
+          className="relative w-full py-2 px-6 bg-[#EF233C] text-white font-semibold rounded-lg shadow-lg hover:bg-[#D90429] transition-transform duration-300 ease-in-out"
           icon="pi pi-external-link"
           onClick={() => setVisible(true)}
         />

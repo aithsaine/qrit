@@ -10,13 +10,16 @@ import {
   IoMdNotificationsOutline,
   IoMdInformationCircleOutline,
 } from "react-icons/io";
+import logo from "../../assets/img/logo.png"
 import avatar from "assets/img/avatars/avatar4.png";
 import api from "helpers/api";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 const Navbar = (props) => {
   const [waitLogout,setWaitLogout] = useState(false)
   const navigate = useNavigate()
+  const {auth} = useSelector(state=>state.auth)
 
   const logoutHandler = async()=>{
     try {
@@ -186,9 +189,9 @@ const Navbar = (props) => {
         <Dropdown
           button={
             <img
-              className="h-10 w-10 rounded-full"
-              src={avatar}
-              alt="Elon Musk"
+              className="h-10 w-10 border border-gray-500 p-1 rounded-full"
+              src={logo}
+              alt=""
             />
           }
           children={
@@ -196,7 +199,7 @@ const Navbar = (props) => {
               <div className="p-4">
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-bold text-navy-700 dark:text-white">
-                    👋 Hey, Adela
+                    👋 Hey, {auth?.name}
                   </p>{" "}
                 </div>
               </div>

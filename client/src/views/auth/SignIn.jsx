@@ -67,10 +67,6 @@ export default function SignIn() {
         </div>
       </form>
   
-      <p className="mt-10 text-center text-sm text-gray-400">
-        Not a member?
-        <a href="#" className="font-semibold leading-6 text-red-500 hover:text-red-400">Start a 7 days free trial</a>
-      </p>
     </div>
   </div>
   );

@@ -42,7 +42,7 @@ class EmployeeController extends Controller
             $employee->hiring_date = $request->hiring_date;
             $employee->address = $request->address;
             $employee->save();
-            return response(["message"=>"employee added with success"]);
+            return response(["message"=>"employee added with success","employee"=>$employee]);
         }catch(ValidationException $error)
         {
             return response($error->errors(),500);

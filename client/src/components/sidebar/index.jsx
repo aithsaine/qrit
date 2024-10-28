@@ -1,42 +1,99 @@
-/* eslint-disable */
-
 import { HiX } from "react-icons/hi";
+import { useState, useEffect, useRef } from "react";
 import Links from "./components/Links";
-import logo from "../../assets/img/logo.png"
-
+import logo from "../../assets/img/logo.png";
 import SidebarCard from "components/sidebar/componentsrtl/SidebarCard";
 import routes from "routes.js";
+import { Html5Qrcode } from "html5-qrcode";
+import { useSelector } from "react-redux";
 
 const Sidebar = ({ open, onClose }) => {
+  const auth = useSelector(state=>state?.auth)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [qrData, setQrData] = useState("");
+  const qrCodeRef = useRef(null);
+  const scannerRef = useRef(null);
+
+  useEffect(() => {
+    // Start QR scanner when modal is open
+    if (isModalOpen && qrCodeRef.current) {
+      scannerRef.current = new Html5Qrcode(qrCodeRef.current.id);
+      scannerRef.current.start(
+        { facingMode: "environment" }, // Use back camera
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        (decodedText) => {
+          setQrData(decodedText);
+          setIsModalOpen(false);
+          alert(`Scanned QR Code: ${decodedText}`); // Handle scanned data
+        },
+        (error) => {
+          console.warn(`QR Code scan error: ${error}`);
+        }
+      );
+    }
+    return () => {
+      // Stop scanner on component unmount or when modal is closed
+      if (scannerRef.current) {
+        scannerRef.current.stop().then(() => scannerRef.current.clear());
+      }
+    };
+  }, [isModalOpen]);
+
   return (
-    <div
-      className={`sm:none duration-175 linear fixed !z-50 flex min-h-full flex-col bg-white pb-10 shadow-2xl shadow-white/5 transition-all dark:!bg-navy-800 dark:text-white md:!z-50 lg:!z-50 xl:!z-0 ${
-        open ? "translate-x-0" : "-translate-x-96"
-      }`}
-    >
-      <span
-        className="absolute top-4 right-4 block cursor-pointer xl:hidden"
-        onClick={onClose}
+    <>
+      <div
+        className={`sm:none duration-175 linear fixed !z-50 flex min-h-full flex-col bg-white pb-10 shadow-2xl shadow-white/5 transition-all dark:!bg-navy-800 dark:text-white md:!z-50 lg:!z-50 xl:!z-0 ${
+          open ? "translate-x-0" : "-translate-x-96"
+        }`}
       >
-        <HiX />
-      </span>
-      <div className={`  flex items-center justify-center`}>
-       <img src={logo} alt="qrit" width={100} className=""/>
+        <span
+          className="absolute top-4 right-4 block cursor-pointer xl:hidden"
+          onClick={onClose}
+        >
+          <HiX />
+        </span>
+        <div className="flex items-center justify-center">
+          <img src={logo} alt="qrit" width={100} className="" />
+        </div>
+        <div className="mt-[28px] mb-7 h-px bg-gray-300 dark:bg-white/30" />
+        
+        {/* Nav item */}
+        <ul className="mb-auto pt-1">
+          <Links routes={routes} />
+        </ul>
+
+        {/* Free Horizon Card */}
+        <div className="flex justify-center">
+          <SidebarCard />
+        </div>
+
+        {/* Scan QR Code Button */}
+        {auth?.role=="employee"&&<div className="mt-4 flex justify-center">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="relative w-full py-2 px-6 mx-2 bg-[#EF233C] text-white font-semibold rounded-lg shadow-lg hover:bg-[#D90429] transition-transform duration-300 ease-in-out"
+            >
+            Scan QR Commande
+          </button>
+        </div>}
       </div>
-      <div class="mt-[28px] mb-7 h-px bg-gray-300 dark:bg-white/30" />
-      {/* Nav item */}
 
-      <ul className="mb-auto pt-1">
-        <Links routes={routes} />
-      </ul>
-
-      {/* Free Horizon Card */}
-      <div className="flex justify-center">
-        <SidebarCard />
-      </div>
-
-      {/* Nav item end */}
-    </div>
+      {/* QR Code Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="relative bg-white dark:bg-navy-800 p-5 rounded-lg shadow-lg w-full max-w-md">
+            <button
+              className="absolute top-2 right-2 text-red-500 hover:text-red-600"
+              onClick={() => setIsModalOpen(false)}
+            >
+              <HiX />
+            </button>
+            <div id="qrCodeReader" ref={qrCodeRef} style={{ width: "100%" }} />
+            <p className="text-center mt-2">Scan a QR code to get Commande</p>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

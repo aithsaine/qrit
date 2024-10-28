@@ -8,18 +8,20 @@ import { Html5Qrcode } from "html5-qrcode";
 import { useSelector } from "react-redux";
 
 const Sidebar = ({ open, onClose }) => {
-  const auth = useSelector(state=>state?.auth)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [qrData, setQrData] = useState("");
+  const auth = useSelector(state=>state?.auth)
   const qrCodeRef = useRef(null);
   const scannerRef = useRef(null);
 
   useEffect(() => {
-    // Start QR scanner when modal is open
     if (isModalOpen && qrCodeRef.current) {
+      // Initialize the scanner instance
       scannerRef.current = new Html5Qrcode(qrCodeRef.current.id);
+      
+      // Start the scanner
       scannerRef.current.start(
-        { facingMode: "environment" }, // Use back camera
+        { facingMode: "environment" },
         { fps: 10, qrbox: { width: 250, height: 250 } },
         (decodedText) => {
           setQrData(decodedText);
@@ -31,10 +33,15 @@ const Sidebar = ({ open, onClose }) => {
         }
       );
     }
+
     return () => {
-      // Stop scanner on component unmount or when modal is closed
-      if (scannerRef.current) {
-        scannerRef.current.stop().then(() => scannerRef.current.clear());
+      // Check if scanner is running before stopping
+      if (scannerRef.current && isModalOpen) {
+        scannerRef.current.stop().then(() => {
+          scannerRef.current.clear();
+        }).catch((err) => {
+          console.warn("Stop error:", err);
+        });
       }
     };
   }, [isModalOpen]);
@@ -89,7 +96,7 @@ const Sidebar = ({ open, onClose }) => {
               <HiX />
             </button>
             <div id="qrCodeReader" ref={qrCodeRef} style={{ width: "100%" }} />
-            <p className="text-center mt-2">Scan a QR code to get Commande</p>
+            <p className="text-center mt-2">Scan a QR code to get data</p>
           </div>
         </div>
       )}

@@ -23,6 +23,9 @@ export default function SignIn() {
             if (resp.data.user.role == "admin") {
                   return window.location.href="/admin"
               }
+              if (resp.data.user.role == "employee") {
+                return window.location.href="/employee"
+            }
           }
 
       } catch (error) {

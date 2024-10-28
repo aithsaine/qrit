@@ -6,32 +6,25 @@ import {
   MdHome,
  
   MdMenuBook,
-  MdOutlinePerson3,
 } from "react-icons/md";
 
-const routes = [
+const emp_routes = [
   {
     name: "Main Dashboard",
-    layout: "admin",
+    layout: "employee",
     path: "/admin",
     icon: <MdHome className="h-6 w-6" />,
   },
   {
-    name: "Menu",
-    layout: "admin",
+    name: "my rates",
+    layout: "employee",
     path: "menu",
     icon: <MdMenuBook className="h-6 w-6" />,
     secondary: true,
   },
-  {
-    name: "Employee",
-    layout: "admin",
-    path: "employees",
-    icon: <MdOutlinePerson3 className="h-6 w-6" />,
-    secondary: true,
-  },
+ 
 
  
 
 ];
-export default routes;
+export default emp_routes;

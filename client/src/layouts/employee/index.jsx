@@ -1,20 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, Navigate, useLocation, Outlet, useNavigate } from "react-router-dom";
+import {  useLocation, Outlet, useNavigate } from "react-router-dom";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
-import routes from "routes.js";
 import { addAuthUser, initialiseData } from "../../redux/actionCreators";
 import { useDispatch } from "react-redux";
 import api from "helpers/api";
 import Loading from "components/Loader";
+import { MdHome, MdMenuBook } from "react-icons/md";
 
-export default function Admin() {
+export default function EmployeeLayout() {
   const location = useLocation();
   const navigate = useNavigate()
   const [open, setOpen] = React.useState(true);
   const [currentRoute, setCurrentRoute] = React.useState("Main Dashboard");
   const dispatch = useDispatch()
+  const emp_routes =  [
+    {
+      name: "Main Dashboard",
+      layout: "employee",
+      path: "/employee",
+      icon: <MdHome className="h-6 w-6" />,
+    },
+    {
+      name: "my rates",
+      layout: "employee",
+      path: "/employee/ratings",
+      icon: <MdMenuBook className="h-6 w-6" />,
+      secondary: true,
+    },
+   
+  
+   
+  
+  ];
   const [loading,setLoading] = useState(true)
 
   async function getUser() {
@@ -22,14 +41,8 @@ export default function Admin() {
         const resp = await api.get("api/user")
         console.log(resp)
         dispatch(addAuthUser(resp.data?.user))
-        if(resp.data?.user.role ==="admin")
-        {
-          getCategories()
-
+        if(resp.data?.user.role ==="employee")
          return setLoading(false)
-        }
-        else if (resp.data?.user.role ==="employee")
-          return navigate('/employee')
     } catch (error) {
         if (error.response.data.message == "Unauthenticated.") {
             setLoading(false)
@@ -41,16 +54,7 @@ export default function Admin() {
 }
 
 
-  const getCategories = async ()=>{
-    try {
-        const {data} = await api.get("/api/home")
-        if(data){
-          dispatch(initialiseData(data))
-        }
-    } catch (error) {
 
-    }
-}
 useEffect(()=>{
   getUser()
   
@@ -62,29 +66,29 @@ useEffect(()=>{
     );
   }, []);
   React.useEffect(() => {
-    getActiveRoute(routes);
+    getActiveRoute(emp_routes);
   }, [location.pathname]);
 
-  const getActiveRoute = (routes) => {
+  const getActiveRoute = (emp_routes) => {
     let activeRoute = "Main Dashboard";
-    for (let i = 0; i < routes.length; i++) {
+    for (let i = 0; i < emp_routes.length; i++) {
       if (
         window.location.href.indexOf(
-           routes[i].path
+           emp_routes[i].path
         ) !== -1
       ) {
-        setCurrentRoute(routes[i].name);
+        setCurrentRoute(emp_routes[i].name);
       }
     }
     return activeRoute;
   };
-  const getActiveNavbar = (routes) => {
+  const getActiveNavbar = (emp_routes) => {
     let activeNavbar = false;
-    for (let i = 0; i < routes.length; i++) {
+    for (let i = 0; i < emp_routes.length; i++) {
       if (
-        window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
+        window.location.href.indexOf(emp_routes[i].layout + emp_routes[i].path) !== -1
       ) {
-        return routes[i].secondary;
+        return emp_routes[i].secondary;
       }
     }
     return activeNavbar;
@@ -105,7 +109,7 @@ useEffect(()=>{
         <main
           className={`mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]`}
         >
-          {/* Routes */}
+          {/* emp_routes */}
           <div className="h-full">
             <Navbar
               onOpenSidenav={() => setOpen(true)}

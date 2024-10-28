@@ -55,3 +55,8 @@ Route::controller(App\Http\Controllers\Api\AuthenticationController::class)->gro
     Route::post('/login',"login");
     Route::post("/logout","logout")->middleware("auth:sanctum");
 });
+
+//menuNeeded Items 
+Route::controller(App\Http\Controllers\Api\MenuNeededController::class)->group(function(){
+    Route::get("menu","index");
+});

@@ -2,6 +2,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import DashIcon from "components/icons/DashIcon";
+import { useSelector } from "react-redux";
 // chakra imports
 
 export function SidebarLinks(props) {
@@ -9,6 +10,7 @@ export function SidebarLinks(props) {
   let location = useLocation();
 
   const { routes } = props;
+  const {auth} = useSelector(state=>state)
 
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName,layout) => {
@@ -17,11 +19,8 @@ export function SidebarLinks(props) {
   };
 
   const createLinks = (routes) => {
-    return routes.map((route, index) => {
-      if (
-        route.layout === "admin" ||
-        route.layout === "/auth"
-      ) {
+    return routes.filter(item=>item.layout===auth.role).map((route, index) => {
+      
         return (
           <Link key={index} to={`${route.path}`}>
             <div className="relative mb-3 flex hover:cursor-pointer">
@@ -54,7 +53,7 @@ export function SidebarLinks(props) {
             </div>
           </Link>
         );
-      }
+      
     });
   };
   // BRAND

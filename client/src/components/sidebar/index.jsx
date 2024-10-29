@@ -12,7 +12,8 @@ import { toast } from "sonner";
 const Sidebar = ({ open, onClose }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [qrData, setQrData] = useState("");
-  const auth = useSelector(state=>state?.auth)
+  const [scanned, setScanned] = useState(false); // Flag to prevent multiple requests
+  const auth = useSelector((state) => state?.auth);
   const qrCodeRef = useRef(null);
   const scannerRef = useRef(null);
 
@@ -20,24 +21,26 @@ const Sidebar = ({ open, onClose }) => {
     if (isModalOpen && qrCodeRef.current) {
       // Initialize the scanner instance
       scannerRef.current = new Html5Qrcode(qrCodeRef.current.id);
-      
+
       // Start the scanner
       scannerRef.current.start(
         { facingMode: "environment" },
         { fps: 10, qrbox: { width: 250, height: 250 } },
-       async (decodedText) => {
-          setQrData(decodedText);
-          console.log(decodedText)
-          try {
-            const {data} = await api.post(decodedText,{employee_id:auth?.id});
-            setIsModalOpen(false);
-            toast.success(data?.message)                          
-          } catch (error) {
-            
-          }finally{
+        async (decodedText) => {
+          if (!scanned) {
+            setQrData(decodedText);
+            setScanned(true); // Prevent further scans until reset
+            console.log(decodedText);
 
-            setIsModalOpen(false);
-            alert(`Scanned QR Code: ${decodedText}`); // Handle scanned data
+            try {
+              const { data } = await api.post(decodedText, { id: auth?.id });
+              toast.success(data?.message);
+            } catch (error) {
+              console.error("Error confirming order:", error);
+            } finally {
+              setIsModalOpen(false);
+              alert(`Scanned QR Code: ${decodedText}`);
+            }
           }
         },
         (error) => {
@@ -47,16 +50,19 @@ const Sidebar = ({ open, onClose }) => {
     }
 
     return () => {
-      // Check if scanner is running before stopping
       if (scannerRef.current && isModalOpen) {
-        scannerRef.current.stop().then(() => {
-          scannerRef.current.clear();
-        }).catch((err) => {
-          console.warn("Stop error:", err);
-        });
+        scannerRef.current
+          .stop()
+          .then(() => {
+            scannerRef.current.clear();
+            setScanned(false); // Reset scan flag when scanner is stopped
+          })
+          .catch((err) => {
+            console.warn("Stop error:", err);
+          });
       }
     };
-  }, [isModalOpen]);
+  }, [isModalOpen, scanned]);
 
   return (
     <>
@@ -87,14 +93,16 @@ const Sidebar = ({ open, onClose }) => {
         </div>
 
         {/* Scan QR Code Button */}
-        {auth?.role=="employee"&&<div className="mt-4 flex justify-center">
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="relative w-full py-2 px-6 mx-2 bg-[#EF233C] text-white font-semibold rounded-lg shadow-lg hover:bg-[#D90429] transition-transform duration-300 ease-in-out"
+        {auth?.role === "employee" && (
+          <div className="mt-4 flex justify-center">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="relative w-full py-2 px-6 mx-2 bg-[#EF233C] text-white font-semibold rounded-lg shadow-lg hover:bg-[#D90429] transition-transform duration-300 ease-in-out"
             >
-            Scan QR Commande
-          </button>
-        </div>}
+              Scan QR Commande
+            </button>
+          </div>
+        )}
       </div>
 
       {/* QR Code Modal */}
@@ -108,7 +116,7 @@ const Sidebar = ({ open, onClose }) => {
               <HiX />
             </button>
             <div id="qrCodeReader" ref={qrCodeRef} style={{ width: "100%" }} />
-            <p className="text-center mt-2">Scan a QR code to get data</p>
+            <p className="text-center mt-2">Scan a QR code to send the order</p>
           </div>
         </div>
       )}

@@ -69,22 +69,30 @@ class OrderController extends Controller
     }
 
 
-    public function confirmOrder(Request $request,$id)
-    {
-        try{
-            $order = Order::where("id",$id)->first();
-            $order_confirm = new OrderConfirm();
-            $order_confirm->order_id = $id;
-            $order_confirm->$request->employee_id;
-            $order->status = "confirmed";
-            $order->save();
-            $order_confirm->save();
-            return response(["message"=>"order confirmed with success"]);
+    public function confirmOrder(Request $request, $id)
+{
+    try {
+        $order = Order::where("id", $id)->first();
 
-        }catch(Exception $error)
-        {
-            return response($error, 500);
-
+        // Check if order exists
+        if (!$order) {
+            return response(["message" => "Order not found"], 404);
         }
+
+        // Create and save the OrderConfirm
+        $order_confirm = new OrderConfirm();
+        $order_confirm->order_id = $id;
+        $order_confirm->employee_id = $request->employee_id; // Corrected this line
+
+        // Update and save the Order status
+        $order->status = "confirmed";
+        $order->save();
+        $order_confirm->save();
+
+        return response(["message" => "Order confirmed successfully"], 200);
+    } catch (Exception $error) {
+        return response(["error" => $error->getMessage()], 500);
     }
+}
+
 }

@@ -10,11 +10,12 @@ use Illuminate\Http\Request;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
-    public function createsOrder(Request $request)
+    public function createOrder(Request $request)
     {
         try {
 
@@ -25,10 +26,10 @@ class OrderController extends Controller
             $order->save();
             foreach ($request->products as $product) {
                 $item = new OrderItem();
-                $item->product_id = $product->id;
+                $item->product_id = $product["id"];
                 $item->order_id = $order->id;
-                $item->price = $product->price;
-                $item->quantity = $product->quantity;
+                $item->price = $product["price"];
+                $item->quantity = $product["quantity"];
                 $item->save();
             }
             $url = url("/api/orders/{$order->id}/confirm");
@@ -48,10 +49,18 @@ class OrderController extends Controller
             // Generate the QR code with the icon
             $result = $writer->write($qrCode, $icon);
 
-            // Save the generated QR code
-            $filePath = "qrcodes/order_{$order->id}.png";
-            Storage::put("public/$filePath", $result->getString());
-            return response()->json(['qr_code_url' => Storage::url("public/$filePath")]);
+            $directoryPath = public_path('qrcodes');
+            $filePath = "{$directoryPath}/order_{$order->id}.png";
+        
+            // Ensure the 'qrcodes' directory exists
+            File::ensureDirectoryExists($directoryPath, 0775, true);
+        
+            // Generate and save the QR code
+            $result->saveToFile($filePath);
+        
+            // Return the public URL for the QR code image
+            return response()->json(['qr_code_url' => asset("qrcodes/order_{$order->id}.png")]);
+        
         } catch (Error $error) {
             return response($error, 500);
         }

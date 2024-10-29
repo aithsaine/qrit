@@ -59,7 +59,7 @@ class OrderController extends Controller
             $result->saveToFile($filePath);
         
             // Return the public URL for the QR code image
-            return response()->json(['qr_code_url' => asset("qrcodes/order_{$order->id}.png")]);
+            return response()->json(['qr_code_url' => "order_{$order->id}.png"]);
         
         } catch (Error $error) {
             return response($error, 500);

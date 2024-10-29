@@ -43,7 +43,7 @@ const Sidebar = ({ open, onClose }) => {
                     toast.success(data?.message);
 
                   }
-                  else{
+                  else if (data?.success==false){
                     toast.error(data?.message);
 
                   }

@@ -54,9 +54,7 @@ const Sidebar = ({ open, onClose }) => {
                 }
               }
             },
-            (error) => {
-              toast.error(`QR Code scan error`);
-            }
+            
           );
         } catch (error) {
           toast.error("Error starting scanner:");

@@ -75,7 +75,7 @@ class OrderController extends Controller
             $order = Order::where("id",$id)->first();
             $order_confirm = new OrderConfirm();
             $order_confirm->order_id = $id;
-            $order_confirm->employee_id = $request->user->employee->id;
+            $order_confirm->$request->employee_id;
             $order->status = "confirmed";
             $order->save();
             $order_confirm->save();

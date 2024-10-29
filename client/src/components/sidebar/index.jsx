@@ -29,7 +29,7 @@ const Sidebar = ({ open, onClose }) => {
           setQrData(decodedText);
           console.log(decodedText)
           try {
-            const {data} = await api.post(decodedText);
+            const {data} = await api.post(decodedText,{employee_id:auth?.id});
             setIsModalOpen(false);
             toast.success(data?.message)                          
           } catch (error) {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderConfirm;
 use App\Models\OrderItem;
 use Error;
 use Illuminate\Http\Request;
@@ -32,7 +33,7 @@ class OrderController extends Controller
                 $item->quantity = $product["quantity"];
                 $item->save();
             }
-            $url = url("/api/orders/{$order->id}/confirm");
+            $url = "/api/orders/{$order->id}/confirm";
 
             $writer = new PngWriter();
 
@@ -63,6 +64,26 @@ class OrderController extends Controller
         
         } catch (Error $error) {
             return response($error, 500);
+        }
+    }
+
+
+    public function confirmOrder(Request $request,$id)
+    {
+        try{
+            $order = Order::where("id",$id)->first();
+            $order_confirm = new OrderConfirm();
+            $order_confirm->order_id = $id;
+            $order_confirm->employee_id = $request->user->employee->id;
+            $order->status = "confirmed";
+            $order->save();
+            $order_confirm->save();
+            return response(["message"=>"order confirmed with success"]);
+
+        }catch(Error $error)
+        {
+            return response($error, 500);
+
         }
     }
 }

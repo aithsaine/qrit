@@ -6,6 +6,8 @@ import SidebarCard from "components/sidebar/componentsrtl/SidebarCard";
 import routes from "routes.js";
 import { Html5Qrcode } from "html5-qrcode";
 import { useSelector } from "react-redux";
+import api from "helpers/api";
+import { toast } from "sonner";
 
 const Sidebar = ({ open, onClose }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,10 +25,19 @@ const Sidebar = ({ open, onClose }) => {
       scannerRef.current.start(
         { facingMode: "environment" },
         { fps: 10, qrbox: { width: 250, height: 250 } },
-        (decodedText) => {
+       async (decodedText) => {
           setQrData(decodedText);
-          setIsModalOpen(false);
-          alert(`Scanned QR Code: ${decodedText}`); // Handle scanned data
+          console.log(decodedText)
+          try {
+            const {data} = await api.post(decodedText);
+            toast.success(data?.message)                          
+          } catch (error) {
+            
+          }finally{
+
+            setIsModalOpen(false);
+            alert(`Scanned QR Code: ${decodedText}`); // Handle scanned data
+          }
         },
         (error) => {
           console.warn(`QR Code scan error: ${error}`);

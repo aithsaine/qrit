@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
+use Exception;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -80,7 +81,7 @@ class OrderController extends Controller
             $order_confirm->save();
             return response(["message"=>"order confirmed with success"]);
 
-        }catch(Error $error)
+        }catch(Exception $error)
         {
             return response($error, 500);
 

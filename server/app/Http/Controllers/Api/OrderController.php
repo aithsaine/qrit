@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderConfirm;
 use App\Models\OrderItem;
+use App\Models\User;
 use Error;
 use Illuminate\Http\Request;
 use Endroid\QrCode\QrCode;
@@ -78,11 +79,11 @@ class OrderController extends Controller
         if (!$order) {
             return response(["message" => "Order not found"], 404);
         }
-
+        $user = User::find($request->id);
         // Create and save the OrderConfirm
         $order_confirm = new OrderConfirm();
         $order_confirm->order_id = $id;
-        $order_confirm->employee_id = $request->user()->employee->id; // Corrected this line
+        $order_confirm->employee_id =$user->employee()->id; // Corrected this line
 
         // Update and save the Order status
         $order->status = "confirmed";

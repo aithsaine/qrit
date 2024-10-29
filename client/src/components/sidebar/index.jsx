@@ -34,7 +34,7 @@ const Sidebar = ({ open, onClose }) => {
               setQrData(decodedText);
               setScanned(true);
               try {
-                const { data } = await api.post(decodedText, { employee_id: auth?.id });
+                const { data } = await api.post(decodedText, { id: auth?.id });
                 toast.success(data?.message);
               } catch (error) {
                 console.error("Error confirming order:", error);

@@ -38,21 +38,28 @@ const Sidebar = ({ open, onClose }) => {
 
                 try {
                   const { data } = await api.post(decodedText, { id: auth?.id });
-                  toast.success(data?.message);
+                  if(data?.success)
+                  {
+                    toast.success(data?.message);
+
+                  }
+                  else{
+                    toast.error(data?.message);
+
+                  }
                 } catch (error) {
                   console.error("Error confirming order:", error);
                 } finally {
                   setIsModalOpen(false);
-                  alert(`Scanned QR Code: ${decodedText}`);
                 }
               }
             },
             (error) => {
-              console.warn(`QR Code scan error: ${error}`);
+              toast.error(`QR Code scan error`);
             }
           );
         } catch (error) {
-          console.error("Error starting scanner:", error);
+          toast.error("Error starting scanner:");
         }
       }
     };

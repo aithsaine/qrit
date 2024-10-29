@@ -85,12 +85,16 @@ class OrderController extends Controller
         $order_confirm->order_id = $id;
         $order_confirm->employee_id =$user->employee->id; // Corrected this line
 
+        if(OrderConfirm::where("order_id",$id)->first())
+        {
+            return response(["message" => "order already confirmed", "success"=>false], 200);
+        }
         // Update and save the Order status
         $order->status = "confirmed";
         $order->save();
         $order_confirm->save();
 
-        return response(["message" => "Order confirmed successfully"], 200);
+        return response(["message" => "Order confirmed successfully", "success"=>true], 200);
     } catch (Exception $error) {
         return response(["error" => $error->getMessage()], 500);
     }

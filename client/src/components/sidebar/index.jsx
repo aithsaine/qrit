@@ -30,6 +30,7 @@ const Sidebar = ({ open, onClose }) => {
           console.log(decodedText)
           try {
             const {data} = await api.post(decodedText);
+            setIsModalOpen(false);
             toast.success(data?.message)                          
           } catch (error) {
             

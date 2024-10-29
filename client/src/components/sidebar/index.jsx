@@ -12,54 +12,53 @@ import { toast } from "sonner";
 const Sidebar = ({ open, onClose }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [qrData, setQrData] = useState("");
-  const [scanned, setScanned] = useState(false); // Flag to prevent multiple requests
+  const [scanned, setScanned] = useState(false);
   const auth = useSelector((state) => state?.auth);
   const qrCodeRef = useRef(null);
   const scannerRef = useRef(null);
 
   useEffect(() => {
     if (isModalOpen && qrCodeRef.current) {
-      // Initialize the scanner instance
-      scannerRef.current = new Html5Qrcode(qrCodeRef.current.id);
-
-      // Start the scanner
-      scannerRef.current.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: { width: 250, height: 250 } },
-        async (decodedText) => {
-          if (!scanned) {
-            setQrData(decodedText);
-            setScanned(true); // Prevent further scans until reset
-            console.log(decodedText);
-
-            try {
-              const { data } = await api.post(decodedText, { employee_id: auth?.id });
-              toast.success(data?.message);
-            } catch (error) {
-              console.error("Error confirming order:", error);
-            } finally {
-              setIsModalOpen(false);
-              alert(`Scanned QR Code: ${decodedText}`);
+      // Initialize scanner only once
+      if (!scannerRef.current) {
+        scannerRef.current = new Html5Qrcode(qrCodeRef.current.id);
+      }
+      
+      // Start the scanner if not already started
+      if (!scanned) {
+        scannerRef.current.start(
+          { facingMode: "environment" },
+          { fps: 10, qrbox: { width: 250, height: 250 } },
+          async (decodedText) => {
+            if (!scanned) {
+              setQrData(decodedText);
+              setScanned(true);
+              try {
+                const { data } = await api.post(decodedText, { employee_id: auth?.id });
+                toast.success(data?.message);
+              } catch (error) {
+                console.error("Error confirming order:", error);
+              } finally {
+                setIsModalOpen(false);
+                alert(`Scanned QR Code: ${decodedText}`);
+              }
             }
+          },
+          (error) => {
+            console.warn(`QR Code scan error: ${error}`);
           }
-        },
-        (error) => {
-          console.warn(`QR Code scan error: ${error}`);
-        }
-      );
+        );
+      }
     }
 
     return () => {
       if (scannerRef.current && isModalOpen) {
-        scannerRef.current
-          .stop()
-          .then(() => {
-            scannerRef.current.clear();
-            setScanned(false); // Reset scan flag when scanner is stopped
-          })
-          .catch((err) => {
-            console.warn("Stop error:", err);
-          });
+        scannerRef.current.stop().then(() => {
+          scannerRef.current.clear();
+          setScanned(false);
+        }).catch((err) => {
+          console.warn("Stop error:", err);
+        });
       }
     };
   }, [isModalOpen, scanned]);
@@ -116,7 +115,7 @@ const Sidebar = ({ open, onClose }) => {
               <HiX />
             </button>
             <div id="qrCodeReader" ref={qrCodeRef} style={{ width: "100%" }} />
-            <p className="text-center mt-2">Scan a QR code to send the order</p>
+            <p className="text-center mt-2">Scan a QR code to get data</p>
           </div>
         </div>
       )}

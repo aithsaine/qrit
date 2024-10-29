@@ -82,7 +82,7 @@ class OrderController extends Controller
         // Create and save the OrderConfirm
         $order_confirm = new OrderConfirm();
         $order_confirm->order_id = $id;
-        $order_confirm->employee_id = $request->employee_id; // Corrected this line
+        $order_confirm->employee_id = $request->user()->employee->id; // Corrected this line
 
         // Update and save the Order status
         $order->status = "confirmed";

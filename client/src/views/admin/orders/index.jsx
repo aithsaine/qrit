@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import List from '../employee/table/List'
+import List from './table/List'
 
 
 export default function AdminOrders() {

@@ -37,7 +37,7 @@ class EmployeeController extends Controller
         try{
             $user = new User();
             $user->name = $request->firstname." ".$request->lastname;
-            $user->email = $request->firstname."-".$request->lastname."@bwise.ma";
+            $user->email = strtolower($request->firstname)."-".strtolower($request->lastname)."@bwise.ma";
             $user->password = Hash::make("qrit-bwise");
             $user->save();
             Employee::validate($request);

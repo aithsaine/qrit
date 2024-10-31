@@ -6,6 +6,8 @@ import {
   Md18UpRating,
   MdHome,
  
+  MdKeyboardCommandKey,
+ 
   MdMenuBook,
   MdOutlinePerson3,
 } from "react-icons/md";
@@ -25,10 +27,17 @@ const routes = [
     secondary: true,
   },
   {
-    name: "Employee",
+    name: "Employees",
     layout: "admin",
     path: "employees",
     icon: <MdOutlinePerson3 className="h-6 w-6" />,
+    secondary: true,
+  },
+  {
+    name: "Orders",
+    layout: "admin",
+    path: "orders",
+    icon: <MdKeyboardCommandKey className="h-6 w-6" />,
     secondary: true,
   },
   {

@@ -26,4 +26,7 @@ class Employee extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function order_confirm(){
+        return $this->hasMany(OrderConfirm::class);
+    }
 }

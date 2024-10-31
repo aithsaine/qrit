@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -48,7 +49,7 @@ class EmployeeController extends Controller
             $employee->hiring_date = $request->hiring_date;
             $employee->address = $request->address;
             $employee->save();
-            return response(["message"=>"employee added with success","employee"=>$employee]);
+            return response(["message"=>"employee added with success","employee"=>new EmployeeResource($employee)]);
         }catch(ValidationException $error)
         {
             return response($error->errors(),500);

@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\OrderResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\TableResource;
 use App\Models\Category;
 use App\Models\Employee;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Table;
 use Illuminate\Http\Request;
@@ -20,7 +22,8 @@ class HomeController extends Controller
         $employees = EmployeeResource::collection(Employee::all());
         $categories = CategoryResource::collection(Category::all());
         $tables = TableResource::collection(Table::all());
-        return response()->json(["categories"=>$categories,"products"=>$products,"employees"=>$employees, "tables"=>$tables]);
+        $orders = OrderResource::collection(Order::all());
+        return response()->json(["categories"=>$categories,"products"=>$products,"employees"=>$employees, "tables"=>$tables,"orders"=>$orders]);
     
     }
 

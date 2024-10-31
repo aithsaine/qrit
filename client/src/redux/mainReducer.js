@@ -7,14 +7,15 @@ const initialState = {
     auth:null,
     products:[],
     employees:[],
-    tables:[]
+    tables:[],
+    orders:[]
 }
 
 export default function mainReducer  (state=initialState,action){
 
     switch (action.type){
         case INIITIALISE:
-            return {...state,categories:action.payload?.categories,products:action?.payload?.products,employees:action.payload.employees}
+            return {...state,orders:[...action?.payload?.orders],categories:action.payload?.categories,products:action?.payload?.products,employees:action.payload.employees}
         case ADDCATEGORY:
             return {...state,categories:[...state.categories,action.payload]}
         case ADDPRODUCT:

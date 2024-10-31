@@ -42,7 +42,7 @@ export default function EmployeeCard({ employee }) {
   };
 
   return (
-    <div className='relative flex flex-col items-center w-40 m-1  md:w-52 h-[250px] border border-gray-300 dark:border-gray-600 rounded-lg shadow-md bg-white dark:bg-gray-800 transition-shadow duration-300 hover:shadow-lg'>
+    <div className='relative flex flex-col justify-center items-center w-40 m-1  md:w-52 h-[250px] border border-gray-300 dark:border-gray-600 rounded-lg shadow-md bg-white dark:bg-gray-800 transition-shadow duration-300 hover:shadow-lg'>
       {/* Employee Image */}
       <img 
         src={fakeempimage} 
@@ -51,7 +51,7 @@ export default function EmployeeCard({ employee }) {
       />
       {/* Employee Info */}
       <div className='flex flex-col items-center p-3'>
-        <h2 className='text-lg font-semibold text-gray-900 dark:text-white'>{employee.firstname} {employee.lastname}</h2>
+        <h2 className='text-justify font-semibold text-gray-900 dark:text-white'>{employee.name.toUpperCase()} </h2>
         <div className='flex mb-1'>{renderStars(4)}</div>
         <span className='text-xs text-gray-500 dark:text-gray-400'>312 ratings</span>
       </div>

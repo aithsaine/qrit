@@ -93,8 +93,8 @@ class OrderController extends Controller
         $order->status = "confirmed";
         $order->save();
         $order_confirm->save();
-
-        return response(["message" => "Order confirmed successfully", "success"=>true], 200);
+        Order::where("table_id",$order->table_id)->where("status","pending")->delete();
+        return response(["table"=>$order->table_id,"message" => "Order confirmed successfully", "success"=>true], 200);
     } catch (Exception $error) {
         return response(["error" => $error->getMessage()], 500);
     }

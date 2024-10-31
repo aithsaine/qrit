@@ -5,6 +5,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Dashboard from "views/admin/default";
 import Employee from "views/admin/employee";
 import Menu from "views/admin/menu";
+import AdminOrders from "views/admin/orders";
 import ProfileOverview from "views/admin/profile";
 import SignIn from "views/auth/SignIn";
 import EmployeeDashboard from "views/employee/default";
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
             {
                 path:"/admin/employees",
                 element:<Employee/>
+            },
+            {
+                path:"/admin/orders",
+                element:<AdminOrders/>
             }
         ]
     },

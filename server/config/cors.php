@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env("FRONTEND_URI"),"http://localhost:3001","http://localhost:3000",env("COFFEE_MENU_URI")],
+    'allowed_origins' => [env("FRONTEND_URI"),"http://localhost:3001","http://localhost:3000",env("COFFEE_MENU_URI"),"http://192.168.100.35:3001","http://192.168.100.35:3000"],
 
     'allowed_origins_patterns' => [],
 

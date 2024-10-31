@@ -3,7 +3,6 @@ import NewEmployeeModal from '../../../components/employee/addEmployee'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import EmployeCard from 'components/card/EmployeCard'
-import List from './table/List'
 
 
 export default function Employee() {
@@ -14,10 +13,9 @@ export default function Employee() {
                 <NewEmployeeModal/>
                 <NewTableModal/>
             </div>
-            <List />
-            {/* <div className='grid grid-cols-3 gap-2'> 
-                {employees.map(emp=><EmployeCard employee={emp}/>)}
-            </div> */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {employees.map(emp=><EmployeCard employee={emp}/>)}
+            </div>
         </div>
     )
 }

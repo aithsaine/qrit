@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Helpers\Helper;
+use App\Models\OrderConfirm;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -22,6 +24,9 @@ class EmployeeResource extends JsonResource
             "phone" => $this->phone,
             "birthday" => $this->birthday,
             "hiring_date" => $this->hiring_date,
+            "last_seen" => Helper::userLastActivityStatus($this->user->last_seen),
+            "last_order"=>OrderConfirm::where("employee_id",$this->id)->orderByDesc("id")->limit(1)->get()
+
         ];
     }
 }

@@ -11,6 +11,7 @@ use App\Http\Resources\TableResource;
 use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Table;
 use Illuminate\Http\Request;
@@ -23,7 +24,11 @@ class HomeController extends Controller
         $categories = CategoryResource::collection(Category::all());
         $tables = TableResource::collection(Table::all());
         $orders = OrderResource::collection(Order::all());
-        return response()->json(["categories"=>$categories,"products"=>$products,"employees"=>$employees, "tables"=>$tables,"orders"=>$orders]);
+        $orderItems = OrderItem::whereHas('order', function ($query) {
+            $query->where('status', 'confirmed');
+        })->get();
+        
+        return response()->json(["categories"=>$categories,"products"=>$products,"employees"=>$employees, "tables"=>$tables,"orders"=>$orders,"items"=>$orderItems]);
     
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\LastSeen;
 use App\Models\Order;
 use App\Models\OrderConfirm;
 use App\Models\OrderItem;
@@ -14,15 +15,13 @@ use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
 use Exception;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
+   
     public function createOrder(Request $request)
     {
         try {
-
-
             $order = new Order();
             $order->table_id = $request->table;
             $order->status = "pending";
@@ -83,10 +82,11 @@ class OrderController extends Controller
         // Create and save the OrderConfirm
         $order_confirm = new OrderConfirm();
         $order_confirm->order_id = $id;
-        $order_confirm->employee_id =$user->employee->id; // Corrected this line
+        $order_confirm->employee_id =$user->employee->id;
 
         if(OrderConfirm::where("order_id",$id)->first())
         {
+           
             return response(["message" => "order already confirmed", "success"=>false], 200);
         }
         // Update and save the Order status
@@ -97,6 +97,9 @@ class OrderController extends Controller
         return response(["table"=>$order->table_id,"message" => "Order confirmed successfully", "success"=>true], 200);
     } catch (Exception $error) {
         return response(["error" => $error->getMessage()], 500);
+    }finally{
+        $user->last_seen = now();
+        $user->save();
     }
 }
 

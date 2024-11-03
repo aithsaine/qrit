@@ -14,16 +14,18 @@ import {
 
 const columnHelper = createColumnHelper();
 
+
+
 // const columns = columnsDataCheck;
 export default function ComplexTable(props) {
   const { tableData } = props;
   const [sorting, setSorting] = React.useState([]);
   let defaultData = tableData;
   const columns = [
-    columnHelper.accessor("name", {
-      id: "name",
+    columnHelper.accessor("worker", {
+      id: "worker",
       header: () => (
-        <p className="text-sm font-bold text-gray-600 dark:text-white">NAME</p>
+        <p className="text-sm  font-bold text-gray-600 dark:text-white">Worker</p>
       ),
       cell: (info) => (
         <p className="text-sm font-bold text-navy-700 dark:text-white">
@@ -34,32 +36,30 @@ export default function ComplexTable(props) {
     columnHelper.accessor("status", {
       id: "status",
       header: () => (
-        <p className="text-sm font-bold text-gray-600 dark:text-white">
+        <p className="text-sm text-center  font-bold text-gray-600 dark:text-white">
           STATUS
         </p>
       ),
       cell: (info) => (
-        <div className="flex items-center">
-          {info.getValue() === "Approved" ? (
-            <MdCheckCircle className="text-green-500 me-1 dark:text-green-300" />
-          ) : info.getValue() === "Disable" ? (
-            <MdCancel className="text-red-500 me-1 dark:text-red-300" />
-          ) : info.getValue() === "Error" ? (
-            <MdOutlineError className="text-amber-500 me-1 dark:text-amber-300" />
-          ) : null}
-          <p className="text-sm font-bold text-navy-700 dark:text-white">
-            {info.getValue()}
+        <div className="flex  items-center justify-start w-full">
+          {info.getValue() === "Online" ? (
+            <MdCheckCircle className=" text-green-500 me-1 dark:text-green-300" />
+          ) :(
+            <MdOutlineError className="w-6 text-amber-500 me-1 dark:text-amber-300" />
+          ) }
+          <p className="text-xs  text-start font-bold text-justify text-navy-700 dark:text-white">
+        {info.getValue()} 
           </p>
         </div>
       ),
     }),
-    columnHelper.accessor("date", {
-      id: "date",
+    columnHelper.accessor("last_order", {
+      id: "last_order",
       header: () => (
-        <p className="text-sm font-bold text-gray-600 dark:text-white">DATE</p>
+        <p className="text-sm font-bold text-center text-gray-600 dark:text-white">Last Order</p>
       ),
       cell: (info) => (
-        <p className="text-sm font-bold text-navy-700 dark:text-white">
+        <p className="text-xs font-bold text-center text-navy-700 dark:text-white">
           {info.getValue()}
         </p>
       ),
@@ -94,9 +94,8 @@ export default function ComplexTable(props) {
     <Card extra={"w-full h-full px-6 pb-6 sm:overflow-x-auto"}>
       <div className="relative flex items-center justify-between pt-4">
         <div className="text-xl font-bold text-navy-700 dark:text-white">
-          Complex Table
+          Workers Recent Activities
         </div>
-        <CardMenu />
       </div>
 
       <div className="mt-8 overflow-x-scroll xl:overflow-x-hidden">

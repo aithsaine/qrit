@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\LastSeen;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware(['auth:sanctum',LastSeen::class])->get('/user', function (Request $request) {
     return response(["user"=>new UserResource( $request->user())]);
 });
 
@@ -34,24 +35,24 @@ Route::controller(App\Http\Controllers\Api\ProductController::class)->group(func
 //home controller
 Route::controller(App\Http\Controllers\Api\HomeController::class)->group(function(){
     Route::get("home","index");
-})->middleware("auth:sanctum");
+})->middleware(["auth:sanctum",LastSeen::class]);
 
 //employee Controller
 Route::controller(App\Http\Controllers\Api\EmployeeController::class)->group(function(){
     Route::post("employee/store","store");
     Route::delete("employee/{id}/delete","destroy");
-})->middleware("auth:sanctum");
+})->middleware(["auth:sanctum"]);
 
 //table controller
 Route::controller(App\Http\Controllers\Api\TableController::class)->group(function(){
     Route::post("table/store","store");
-})->middleware("auth:sanctum");
+})->middleware(["auth:sanctum"]);
 
 
 
 Route::controller(App\Http\Controllers\Api\AuthenticationController::class)->group(function(){
     Route::post('/login',"login");
-    Route::post("/logout","logout")->middleware("auth:sanctum");
+    Route::post("/logout","logout")->middleware(["auth:sanctum"]);
 });
 
 //menuNeeded Items 

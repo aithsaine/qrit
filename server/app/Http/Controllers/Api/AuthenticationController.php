@@ -24,6 +24,8 @@ class AuthenticationController extends Controller
             $user = User::whereEmail($request->email)->first();
             if (Hash::check($request->password, $user->password)) {
                 $token  = $user->createToken("auth_token")->plainTextToken;
+                $user->last_seen = now();
+                $user->save();
                 return response()->json(["message" => "logged succefully", "success" => true, "status" => 200, "token" => $token,"user"=> new UserResource($user)]);
             } else {
                 return response(["password" => ["incorrect password"]], 422);

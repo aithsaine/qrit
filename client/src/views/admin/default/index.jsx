@@ -1,5 +1,4 @@
 import MiniCalendar from "components/calendar/MiniCalendar";
-import TotalSpent from "views/admin/default/components/TotalSpent";
 import PieChartCard from "views/admin/default/components/PieChartCard";
 import { IoMdHome } from "react-icons/io";
 import { IoDocuments } from "react-icons/io5";
@@ -16,6 +15,7 @@ import tableDataCheck from "./variables/tableDataCheck.json";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import OrderHistory from "./components/OrderHistory";
+import MenuPopularity from "./components/TotalSpent";
 
 const formatDate = (dateString) => {
   // Create a Date object from the ISO date string
@@ -94,7 +94,7 @@ const Dashboard = () => {
     {/* Charts */}
 
     <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
-      <TotalSpent />
+      <MenuPopularity />
       <OrderHistory />
     </div>
 
@@ -116,12 +116,12 @@ const Dashboard = () => {
       </div>
 
        {/* Check Table */}
-       <div>
+       {/* <div>
         <CheckTable
           columnsData={columnsDataCheck}
           tableData={tableDataCheck}
         />
-      </div>
+      </div> */}
 
   
 

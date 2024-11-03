@@ -65,4 +65,7 @@ Route::controller(App\Http\Controllers\Api\OrderController::class)->group(functi
     Route::post("order/create","createOrder");
     Route::post("orders/{id}/confirm","confirmOrder")->middleware("auth:sanctum");
     Route::get("orders/worker/{id}","getOrdersByWorker")->middleware("auth:sanctum");
+    Route::get("orders/analytics","getCountOrdersForEachProduct");
     });
+
+    

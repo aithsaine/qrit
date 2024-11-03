@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Chart from 'react-apexcharts';
+import React, { Component } from "react";
+import Chart from "react-apexcharts";
 
 class BarChart extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class BarChart extends Component {
         series={this.state.chartData}
         type="bar"
         width="100%"
-        height="100%"
+        height="300"
       />
     );
   }

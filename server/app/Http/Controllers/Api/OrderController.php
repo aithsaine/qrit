@@ -16,6 +16,7 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class OrderController extends Controller
@@ -124,6 +125,20 @@ public function getOrdersByWorker ($id)
     {
         return response(["message"=>"somethink went wrong"],500);
     }
+}
+
+public function getCountOrdersForEachProduct()
+{
+   $data= DB::table("orders")
+   ->join("order_items","orders.id",'=',"order_items.product_id")
+   ->join("products","products.id","=","order_items.product_id")
+   ->where("orders.status","confirmed")
+   ->groupBy("order_items.product_id")
+   ->selectRaw("products.name,count(order_items.id) as orders")
+   ->orderByDesc("orders")
+   ->get();
+    return response(["orders"=>$data]);
+
 }
 
 }

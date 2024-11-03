@@ -1,51 +1,141 @@
-import React from "react";
-import {
-  MdArrowDropUp,
-  MdOutlineCalendarToday,
-  MdBarChart,
-} from "react-icons/md";
+import React, { useEffect, useState } from "react";
 import Card from "components/card";
-import {
-  lineChartDataTotalSpent,
-  lineChartOptionsTotalSpent,
-} from "variables/charts";
-import LineChart from "components/charts/LineChart";
+import BarChart from "../../../../components/charts/BarChart";
+import api from "helpers/api";
 
-const TotalSpent = () => {
+const MenuPopularity = () => {
+  const [data, setData] = useState([]);
+
+  const getData = async () => {
+    try {
+      const response = await api.get("api/orders/analytics");
+      console.log(response.data); // Log the API response for debugging
+      setData(response.data.orders);
+    } catch (error) {
+      console.error("Error fetching data:", error); // Log any errors
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // Transform data for the chart
+  const chartData = [
+    {
+      name: "Orders",
+      data: data.map(item => item.orders), // Extract orders from the API response
+    },
+  ];
+
+  // Define chart options
+  const chartOptions = {
+    chart: {
+      type: "bar",
+      toolbar: {
+        show: false,
+      },
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: "40%",
+        endingShape: "rounded",
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    xaxis: {
+      categories: data.map(item => item.name), // Extract names for categories
+      title: {
+        text: "Menu Items",
+        style: {
+          fontWeight: "bold",
+          color: "#333",
+        },
+      },
+      labels: {
+        style: {
+          colors: ["#888"],
+          fontSize: "12px",
+        },
+      },
+    },
+    yaxis: {
+      title: {
+        text: "Order Count",
+        style: {
+          fontWeight: "bold",
+          color: "#333",
+        },
+      },
+      labels: {
+        style: {
+          colors: ["#888"],
+          fontSize: "12px",
+        },
+      },
+    },
+    colors: ["#EF233C"], // Updated color theme
+    fill: {
+      type: "gradient",
+      gradient: {
+        shade: "light",
+        type: "vertical",
+        shadeIntensity: 0.5,
+        gradientToColors: ["#EF236D"],
+        inverseColors: true,
+        opacityFrom: 0.85,
+        opacityTo: 0.95,
+      },
+    },
+    grid: {
+      show: false, // Hide grid lines
+    },
+    title: {
+      text: "Menu Item Popularity",
+      align: "center",
+      style: {
+        fontSize: "18px",
+        fontWeight: "bold",
+        color: "#333",
+      },
+    },
+    tooltip: {
+      theme: "dark",
+      y: {
+        formatter: (val) => `${val} orders`,
+      },
+    },
+  };
+
   return (
-    <Card extra="!p-[20px] text-center">
-      <div className="flex justify-between">
-        <button className="linear mt-1 flex items-center justify-center gap-2 rounded-lg bg-lightPrimary p-2 text-gray-600 transition duration-200 hover:cursor-pointer hover:bg-gray-100 active:bg-gray-200 dark:bg-navy-700 dark:hover:opacity-90 dark:active:opacity-80">
-          <MdOutlineCalendarToday />
-          <span className="text-sm font-medium text-gray-600">This month</span>
-        </button>
-        <button className="!linear z-[1] flex items-center justify-center rounded-lg bg-lightPrimary p-2 text-brand-500 !transition !duration-200 hover:bg-gray-100 active:bg-gray-200 dark:bg-navy-700 dark:text-white dark:hover:bg-white/20 dark:active:bg-white/10">
-          <MdBarChart className="h-6 w-6" />
+    <Card extra="!p-[20px] text-center shadow-lg rounded-lg bg-white dark:bg-navy-800">
+      <div className="flex justify-between mb-4">
+        <button className="linear mt-1 flex items-center justify-center gap-2 rounded-lg bg-blue-500 p-2 text-white transition duration-200 hover:bg-blue-600 dark:bg-navy-700 dark:hover:opacity-90">
+          <span className="text-sm font-medium">This Month</span>
         </button>
       </div>
 
-      <div className="fle w-full flex-row justify-between sm:flex-wrap lg:flex-nowrap 2xl:overflow-hidden">
-        <div className="flex flex-col">
-          <p className="mt-[20px] text-3xl font-bold text-navy-700 dark:text-white">
-            $37.5K
-          </p>
-          <div className="flex flex-col items-start">
-            <p className="mt-2 text-sm text-gray-600">Total Spent</p>
-            <div className="flex flex-row items-center justify-center">
-              <MdArrowDropUp className="font-medium text-green-500" />
-              <p className="text-sm font-bold text-green-500"> +2.45% </p>
-            </div>
+      <div className="mt-4 text-center">
+        <h2 className="text-3xl font-bold text-gray-800 dark:text-white">
+          Popular Menu Items
+        </h2>
+        <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          Track orders to see what’s trending and adjust your menu.
+        </p>
+
+        {data.length > 0 ? ( // Check if data is available
+          <div className="w-full max-w-lg mx-auto mt-6">
+            <BarChart chartData={chartData} chartOptions={chartOptions} />
           </div>
-        </div>
-        <div className="h-full w-full">
-          <LineChart
-            options={lineChartOptionsTotalSpent}
-            series={lineChartDataTotalSpent}
-          />
-        </div>
+        ) : (
+          <p className="mt-4 text-gray-500">Loading...</p> // Show loading message
+        )}
       </div>
     </Card>
   );
 };
 
-export default TotalSpent;
+export default MenuPopularity;

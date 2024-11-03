@@ -22,7 +22,7 @@ class OrderResource extends JsonResource
         return [
             "id"=>$this->id,
             "status"=>$this->status,
-            "date"=>Carbon::parse($this->created_at)->translatedFormat('l d F Y H:i:s'),
+            "date"=>$this->created_at,
             "table"=>$this->table_id,
             "confirmer"=>$this->order_confirm?$this->order_confirm->employee_id:null,
             "total"=>array_reduce($this->order_items->toArray(),

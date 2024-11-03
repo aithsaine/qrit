@@ -1,22 +1,51 @@
 import PieChart from "components/charts/PieChart";
-import { pieChartData, pieChartOptions } from "variables/charts";
 import Card from "components/card";
+import { useState, useEffect } from "react";
+import api from "helpers/api";
 
 const PieChartCard = () => {
+  const [filterTime, setFilterTime] = useState("weekly");
+  const [data, setData] = useState([]);
+  const [pieChartData, setPieChartData] = useState([]);
+  const [pieChartOptions, setPieChartOptions] = useState({});
+
+  const getData = async () => {
+    try {
+      const response = await api.get(`api/orders/workeroverview/${filterTime}`);
+      setData(response.data); // Assuming response.data is an array of counts for the pie chart
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, [filterTime]);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      // Example data transformation, adjust based on actual structure
+      setPieChartData(data.map(item => item.count)); // Adjust as per actual data structure
+      setPieChartOptions({
+        labels: data.map(item => item.label), // Adjust as per actual data structure
+      });
+    }
+  }, [data]);
+
   return (
     <Card extra="rounded-[20px] p-3">
       <div className="flex flex-row justify-between px-3 pt-2">
-        <div>
-          <h4 className="text-lg font-bold text-navy-700 dark:text-white">
-            Your Pie Chart
-          </h4>
-        </div>
-
+        <h4 className="text-lg font-bold text-navy-700 dark:text-white">
+          Workers Performance
+        </h4>
         <div className="mb-6 flex items-center justify-center">
-          <select className="mb-3 mr-2 flex items-center justify-center text-sm font-bold text-gray-600 hover:cursor-pointer dark:!bg-navy-800 dark:text-white">
-            <option value="monthly">Monthly</option>
-            <option value="yearly">Yearly</option>
-            <option value="weekly">Weekly</option>
+          <select
+            onChange={e => setFilterTime(e.target.value)}
+            className="mb-3 mr-2 flex items-center justify-center text-sm font-bold text-gray-600 hover:cursor-pointer dark:!bg-navy-800 dark:text-white"
+          >
+            <option value="weekly">Last 7 days</option>
+            <option value="monthly">Last 30 days</option>
+            <option value="yearly">Last 360 days</option>
           </select>
         </div>
       </div>
@@ -24,28 +53,10 @@ const PieChartCard = () => {
       <div className="mb-auto flex h-[220px] w-full items-center justify-center">
         <PieChart options={pieChartOptions} series={pieChartData} />
       </div>
+
       <div className="flex flex-row !justify-between rounded-2xl px-6 py-3 shadow-2xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-        <div className="flex flex-col items-center justify-center">
-          <div className="flex items-center justify-center">
-            <div className="h-2 w-2 rounded-full bg-brand-500" />
-            <p className="ml-1 text-sm font-normal text-gray-600">Your Files</p>
-          </div>
-          <p className="mt-px text-xl font-bold text-navy-700  dark:text-white">
-            63%
-          </p>
-        </div>
-
-        <div className="h-11 w-px bg-gray-300 dark:bg-white/10" />
-
-        <div className="flex flex-col items-center justify-center">
-          <div className="flex items-center justify-center">
-            <div className="h-2 w-2 rounded-full bg-[#6AD2FF]" />
-            <p className="ml-1 text-sm font-normal text-gray-600">System</p>
-          </div>
-          <p className="mt-px text-xl font-bold text-navy-700 dark:text-white">
-            25%
-          </p>
-        </div>
+        {/* Example static display, update as necessary */}
+       count orders per each worker
       </div>
     </Card>
   );

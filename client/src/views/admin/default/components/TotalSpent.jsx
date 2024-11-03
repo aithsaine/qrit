@@ -3,28 +3,14 @@ import Card from "components/card";
 import BarChart from "../../../../components/charts/BarChart";
 import api from "helpers/api";
 
-const MenuPopularity = () => {
-  const [data, setData] = useState([]);
-
-  const getData = async () => {
-    try {
-      const response = await api.get("api/orders/analytics");
-      console.log(response.data); // Log the API response for debugging
-      setData(response.data.orders);
-    } catch (error) {
-      console.error("Error fetching data:", error); // Log any errors
-    }
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
+const MenuPopularity = ({data}) => {
+  
 
   // Transform data for the chart
   const chartData = [
     {
       name: "Orders",
-      data: data.map(item => item.orders), // Extract orders from the API response
+      data: data.map(item => item.order_count), // Extract orders from the API response
     },
   ];
 
@@ -47,7 +33,7 @@ const MenuPopularity = () => {
       enabled: false,
     },
     xaxis: {
-      categories: data.map(item => item.name), // Extract names for categories
+      categories: data.map(item => item.product_name), // Extract names for categories
       title: {
         text: "Menu Items",
         style: {
@@ -56,6 +42,7 @@ const MenuPopularity = () => {
         },
       },
       labels: {
+        show:false,
         style: {
           colors: ["#888"],
           fontSize: "12px",
@@ -101,7 +88,9 @@ const MenuPopularity = () => {
         fontWeight: "bold",
         color: "#333",
       },
+      
     },
+    
     tooltip: {
       theme: "dark",
       y: {
@@ -113,9 +102,7 @@ const MenuPopularity = () => {
   return (
     <Card extra="!p-[20px] text-center shadow-lg rounded-lg bg-white dark:bg-navy-800">
       <div className="flex justify-between mb-4">
-        <button className="linear mt-1 flex items-center justify-center gap-2 rounded-lg bg-blue-500 p-2 text-white transition duration-200 hover:bg-blue-600 dark:bg-navy-700 dark:hover:opacity-90">
-          <span className="text-sm font-medium">This Month</span>
-        </button>
+     
       </div>
 
       <div className="mt-4 text-center">

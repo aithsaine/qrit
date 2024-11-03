@@ -129,16 +129,50 @@ public function getOrdersByWorker ($id)
 
 public function getCountOrdersForEachProduct()
 {
-   $data= DB::table("orders")
-   ->join("order_items","orders.id",'=',"order_items.product_id")
-   ->join("products","products.id","=","order_items.product_id")
-   ->where("orders.status","confirmed")
-   ->groupBy("order_items.product_id")
-   ->selectRaw("products.name,count(order_items.id) as orders")
-   ->orderByDesc("orders")
-   ->get();
-    return response(["orders"=>$data]);
-
+    try {
+        $data = DB::table("order_items")
+            ->join("orders", "orders.id", "=", "order_items.order_id") // Correct join to relate orders with order_items
+            ->join("products", "products.id", "=", "order_items.product_id")
+            ->where("orders.status", "confirmed") // Filter for confirmed orders here
+            ->groupBy("order_items.product_id", "products.name") // Group by product_id and product name
+            ->selectRaw("products.name as product_name, COUNT(order_items.id) as order_count") // Select product name and order count
+            ->orderByDesc("order_count") // Order by order count descending
+            ->limit(5)
+            ->get();
+        
+        return response()->json(["orders" => $data]); // Return the response as JSON
+    } catch (\Exception $e) {
+        return response()->json(["message" => "Something went wrong: " . $e->getMessage()], 500);
+    }
 }
+
+
+
+public function getEmployeeOrdersCountByTime($filterTime)
+{
+    try {
+        $query = DB::table("employees")
+            ->join("order_confirms", "employees.id", "=", "order_confirms.employee_id")
+            ->join("users","users.id","=","employees.user_id")
+            ->select("users.name as label", DB::raw("COUNT(order_confirms.id) as count"))
+            ->groupBy("users.name"); // Group by employee name or any relevant field
+
+        // Apply filtering based on the time period
+        if ($filterTime === 'weekly') {
+            $query->where('order_confirms.created_at', '>=', now()->subDays(7));
+        } elseif ($filterTime === 'monthly') {
+            $query->where('order_confirms.created_at', '>=', now()->subDays(30));
+        } elseif ($filterTime === 'yearly') {
+            $query->where('order_confirms.created_at', '>=', now()->subDays(360));
+        }
+
+        $data = $query->get();
+
+        return response()->json($data);
+    } catch (Error $er) {
+        return response()->json(["message" => "Something went wrong"], 500);
+    }
+}
+
 
 }

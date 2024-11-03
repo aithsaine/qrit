@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import OrderHistory from "./components/OrderHistory";
 import MenuPopularity from "./components/TotalSpent";
+import api from "helpers/api";
 
 const formatDate = (dateString) => {
   // Create a Date object from the ISO date string
@@ -38,6 +39,21 @@ const formatDate = (dateString) => {
 const Dashboard = () => {
   const { employees } = useSelector((state) => state);
   const [tableDataComplex, setTableDataComplex] = useState();
+
+  const [data, setData] = useState([]);
+
+  const getData = async () => {
+    try {
+      const response = await api.get("api/orders/analytics");
+      setData(response.data.orders);
+    } catch (error) {
+      console.error("Error fetching data:", error); // Log any errors
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   useEffect(() => {
     if (employees) {
@@ -94,7 +110,7 @@ const Dashboard = () => {
     {/* Charts */}
 
     <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
-      <MenuPopularity />
+      <MenuPopularity data={data} />
       <OrderHistory />
     </div>
 

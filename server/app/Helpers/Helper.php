@@ -15,7 +15,7 @@ class Helper
             : "Last seen at {$timestamp?->format('d/m/Y H:i')}"
         );
 
-        return $val==null?"Offline": ($timestamp?->gt(now()->subSeconds(5)) ? 'Online' : $lastSeenFormat);
+        return $val==null?"Offline": ($timestamp?->gt(now()->subSeconds(30)) ? 'Online' : $lastSeenFormat);
     }
     public static function  getDate($dt)
     {

@@ -63,5 +63,6 @@ Route::controller(App\Http\Controllers\Api\MenuNeededController::class)->group(f
 //order controller
 Route::controller(App\Http\Controllers\Api\OrderController::class)->group(function(){
     Route::post("order/create","createOrder");
-    Route::post("orders/{id}/confirm","confirmOrder");
+    Route::post("orders/{id}/confirm","confirmOrder")->middleware("auth:sanctum");
+    Route::get("orders/worker/{id}","getOrdersByWorker")->middleware("auth:sanctum");
     });

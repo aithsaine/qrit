@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\LastSeen;
+use App\Http\Resources\OrderResource;
+use App\Models\Employee;
 use App\Models\Order;
 use App\Models\OrderConfirm;
 use App\Models\OrderItem;
@@ -100,6 +102,27 @@ class OrderController extends Controller
     }finally{
         $user->last_seen = now();
         $user->save();
+    }
+}
+
+public function getOrdersByWorker ($id)
+{
+    try{
+        $employee = Employee::find($id);
+        $confirmedOrders = $employee->order_confirm()->with('order')->get();
+
+        // Extract order IDs from confirmed orders
+        $orderIds = $confirmedOrders->pluck('order_id')->unique();
+    
+        // Get all orders associated with the confirmed orders
+        $orders = Order::whereIn('id', $orderIds)->get();
+    
+
+        return response(OrderResource::collection($orders));
+
+    }catch(Error $error)
+    {
+        return response(["message"=>"somethink went wrong"],500);
     }
 }
 

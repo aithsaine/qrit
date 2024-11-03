@@ -37,7 +37,7 @@ const formatDate = (dateString) => {
 };
 const Dashboard = () => {
   const { employees } = useSelector((state) => state);
-  const [tableDataComplex, setTableDataComplex] = useState([]);
+  const [tableDataComplex, setTableDataComplex] = useState();
 
   useEffect(() => {
     if (employees) {
@@ -103,10 +103,10 @@ const Dashboard = () => {
     <div className="mt-5 grid grid-cols-1 gap-5 xl:grid-cols-2">
          {/* Complex Table , Task & Calendar */}
 
-         <ComplexTable
+       {tableDataComplex&&  <ComplexTable
         columnsData={columnsDataComplex}
         tableData={tableDataComplex}
-      />
+      />}
 
       {/* Traffic chart & Pie Chart */}
 

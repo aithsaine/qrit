@@ -2,17 +2,27 @@ import { useState, useEffect } from "react";
 import Card from "components/card";
 import { MdFilterList, MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { IoMdSync } from "react-icons/io";
+import api from "helpers/api";
 
 const OrderHistory = () => {
-  const { orders } = useSelector((state) => state); // Fetch orders from Redux state
+  const { orders, employees } = useSelector((state) => state); // Fetch orders and employees from Redux state
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [filter, setFilter] = useState("week"); // Default filter
+  const [workerId, setWorkerId] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // Items per page
+  const itemsPerPage = 4; // Items per page
+  const [errorFetching,setErrorFetching] = useState();
 
   useEffect(() => {
-    filterOrders();
-  }, [filter, orders]);
+    if (filter === "worker" && workerId) {
+      fetchWorkerOrders(workerId); // Fetch orders by worker
+    } else {
+      filterOrders(); // Default filter behavior for day, week, month
+    }
+  }, [filter, workerId, orders]);
 
   const filterOrders = () => {
     const now = new Date();
@@ -25,14 +35,23 @@ const OrderHistory = () => {
           return orderDate >= new Date(now.setDate(now.getDate() - 7));
         case "month":
           return orderDate >= new Date(now.setMonth(now.getMonth() - 1));
-        case "worker":
-          return order.worker === "specific_worker"; // Adjust as needed
         default:
           return true;
       }
     });
     setFilteredOrders(filtered);
     setCurrentPage(1); // Reset to first page on filter change
+  };
+
+  const fetchWorkerOrders = async (id) => {
+    setLoading(true);
+    try {
+      const response = await api.get(`api/orders/worker/${id}`);
+      setFilteredOrders(response.data);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Pagination logic
@@ -46,33 +65,19 @@ const OrderHistory = () => {
       direction === "next" ? Math.min(prevPage + 1, totalPages) : Math.max(prevPage - 1, 1)
     );
   };
-  const formatDate = (dateString) => {
-    // Create a Date object from the ISO date string
-    const date = new Date(dateString);
-  
-    // Format date parts
-    const dayName = new Intl.DateTimeFormat("en-GB", { weekday: "long" }).format(date);
-    const day = date.getDate();
-    const month = new Intl.DateTimeFormat("en-GB", { month: "long" }).format(date);
-    const year = date.getFullYear();
-  
-    // Format time parts
-    const hours = date.getHours().toString().padStart(2, "0");
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-    const seconds = date.getSeconds().toString().padStart(2, "0");
-  
-    // Combine into the desired format
-    return `${dayName} ${day} ${month} ${year} at ${hours}:${minutes}:${seconds}`;
-  };
+
   return (
     <Card extra="flex flex-col justify-between bg-white dark:bg-navy-800 w-full rounded-3xl py-6 px-4 text-center shadow-lg">
-      <div className="flex items-center justify-between px-4">
+      <div className="flex flex-col md:flex-row items-center justify-between px-4">
         <h2 className="text-lg font-bold text-navy-700 dark:text-white">Order History</h2>
         <div className="flex items-center space-x-2">
-          {["day", "week", "month", "worker"].map((period) => (
+          {["day", "week", "month"].map((period) => (
             <button
               key={period}
-              onClick={() => setFilter(period)}
+              onClick={() => {
+                setFilter(period);
+                setWorkerId(null); // Reset worker filter
+              }}
               className={`px-2 py-0.5 text-xs rounded-lg font-medium ${
                 filter === period ? "bg-[#EF233C] text-white" : "bg-[white] border border-[#EF233C] text-[#EF233C]"
               } hover:bg-[#EF233C] hover:text-white`}
@@ -80,31 +85,70 @@ const OrderHistory = () => {
               {period.charAt(0).toUpperCase() + period.slice(1)}
             </button>
           ))}
-          <MdFilterList className="h-6 w-6 text-[#EF233C] " />
+          <select
+            onChange={(e) => {
+              setFilter("worker");
+              setWorkerId(e.target.value);
+            }}
+            value={workerId || ""}
+            className="px-2 py-0.5 text-xs rounded-lg font-medium bg-[white] border border-[#EF233C] text-[#EF233C] hover:bg-[#EF233C] hover:text-white"
+          >
+            <option value="">Select Worker</option>
+            {employees.map((employee) => (
+              <option key={employee.id} value={employee.id}>
+                {employee.name}
+              </option>
+            ))}
+          </select>
+          <MdFilterList className="h-6 w-6 text-[#EF233C]" />
         </div>
       </div>
 
       <div className="mt-6 px-4">
-        <ul className="space-y-4">
-          {currentItems.length > 0 ? (
-            currentItems.map((order, index) => (
-              <li
-                key={order.id || index}
-                className="flex justify-between items-center rounded-lg bg-gray-50 dark:bg-navy-800 p-4"
-              >
-                <div className="text-left">
-                  <p className="font-semibold text-white dark:text-white">{order.worker}</p>
-                  <p className="text-sm text-gray-800 font-bold dark:text-gray-300">
-                    {formatDate(order.date)} - {order.total} MAD
-                  </p>
-                </div>
-                <span className={`text-white text-sm py-0.5 px-2 rounded-xl ${order?.status=="pending"?'bg-orange-600':"bg-green-900"}`} > {order.status}</span>
-              </li>
-            ))
-          ) : (
-            <p className="text-gray-500 dark:text-gray-300">No orders found.</p>
-          )}
-        </ul>
+        {loading ? (
+          <div className="flex justify-center items-center h-[250px]">
+            <IoMdSync className="animate-spin text-3xl text-[#EF233C]" />
+          </div>
+        ) : (
+          <ul className="space-y-4">
+            {currentItems.length > 0 ? (
+              currentItems.map((order, index) => (
+                <li
+                  key={order.id || index}
+                  className="flex justify-between items-center rounded-lg bg-gradient-to-r from-gray-50 to-gray-100 dark:from-navy-800 dark:to-navy-900 p-4 shadow-lg transition-all duration-200 hover:shadow-xl"
+                >
+                  <div className="flex flex-col text-left space-y-1">
+                    <p className="font-semibold text-navy-700 dark:text-white text-lg">{order.worker}</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">
+                      {new Date(order.date).toLocaleDateString("fr-FR", {
+                        weekday: "long",
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                      {" at "}
+                      {new Date(order.date).toLocaleTimeString("fr-FR")}
+                    </p>
+                    <p className="text-md font-semibold text-green-700 dark:text-green-400">
+                      Total: {order.total} MAD
+                    </p>
+                  </div>
+                  <span
+                    className={`text-sm font-medium py-1 px-3 rounded-full text-white ${
+                      order.status === "pending"
+                        ? "bg-orange-500 dark:bg-orange-600"
+                        : "bg-green-500 dark:bg-green-600"
+                    }`}
+                  >
+                    {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                  </span>
+                </li>
+              ))
+            ) : (
+              <p className="text-gray-500 dark:text-gray-300">No orders found.</p>
+            )}
+          </ul>
+        )}
       </div>
 
       {/* Pagination Controls */}
@@ -125,7 +169,7 @@ const OrderHistory = () => {
           onClick={() => handlePageChange("next")}
           disabled={currentPage === totalPages}
           className={`p-2 rounded-full ${
-            currentPage === totalPages ? "bg-gray-300 dark:bg-gray-600 text-gray-400" : "bg-brand-500 text-white"
+            currentPage === totalPages ? "bg-gray-300 dark:bg-gray-600 text-gray-400" : "bg-[#EF233C] text-white"
           }`}
         >
           <MdChevronRight className="h-5 w-5" />

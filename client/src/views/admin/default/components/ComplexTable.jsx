@@ -3,7 +3,7 @@ import CardMenu from "components/card/CardMenu";
 import Card from "components/card";
 import Progress from "components/progress";
 import { MdCancel, MdCheckCircle, MdOutlineError } from "react-icons/md";
-
+import employeeFakeImage from "../../../../assets/img/employee.png"
 import {
   createColumnHelper,
   flexRender,
@@ -28,7 +28,12 @@ export default function ComplexTable(props) {
         <p className="text-sm  font-bold text-gray-600 dark:text-white">Worker</p>
       ),
       cell: (info) => (
-        <p className="text-sm font-bold text-navy-700 dark:text-white">
+        <p className="text-sm font-bold flex items-center justify-start text-navy-700 dark:text-white">
+           <img
+                                        src= {employeeFakeImage}
+                                        alt="emp"
+                                        className="w-8 h-8 rounded-full border border-gray-300"
+                                    />
           {info.getValue()}
         </p>
       ),

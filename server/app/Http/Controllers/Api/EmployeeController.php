@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\OrderResource;
 use App\Models\Employee;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -94,5 +96,12 @@ class EmployeeController extends Controller
         } catch (\Exception $e) {
             return response(["error" => "An error occurred while deleting the employee"], 500);
         }
+    }
+
+    public function getOrdersForEmployeeTables($id){
+    $employee = User::find($id)->employee;
+    $tables = $employee->tables()->get("id");
+    $orders = Order::whereIn("table_id",$tables)->get();
+        return response(["orders"=>OrderResource::collection($orders)]);
     }
 }

@@ -10,12 +10,18 @@ class Table extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'num_table', 
+        'num_table',
+        "employee_id"
     ];
     public static function validate(Request $request)
     {
         $request->validate([
             'num_table' => 'required|integer|unique:tables,num_table', 
+            "employee"=>"required|exists:employees,id"
         ]);
+    }
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
     }
 }

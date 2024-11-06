@@ -41,6 +41,7 @@ Route::controller(App\Http\Controllers\Api\HomeController::class)->group(functio
 Route::controller(App\Http\Controllers\Api\EmployeeController::class)->group(function(){
     Route::post("employee/store","store");
     Route::delete("employee/{id}/delete","destroy");
+    Route::get("employee/{id}/dashboard","getOrdersForEmployeeTables");
 })->middleware(["auth:sanctum"]);
 
 //table controller

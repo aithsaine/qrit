@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { Puff } from 'react-loading-icons';
 import { toast } from 'sonner';
 import api from 'helpers/api';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addTable } from '../../redux/actionCreators';
 
 export default function NewTableModal() {
@@ -14,13 +14,14 @@ export default function NewTableModal() {
   const [tableNumber, setTableNumber] = useState('');
   const [wait, setWait] = useState(false);
   const dispatch = useDispatch();
-
+  const [employee,setEmployee] = useState("")
+  const {employees} = useSelector(state=>state)
   // Handle form submission
   const store = async () => {
     try {
       const { data } = await api.post(
         'api/table/store',
-        { num_table: tableNumber },
+        { num_table: tableNumber,employee },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -101,6 +102,21 @@ export default function NewTableModal() {
                     placeholder="Ex: 5"
                   />
                 </div>
+                 {/* Employee Select */}
+                 <div className="relative">
+                <label htmlFor="category" className="block text-gray-600 mb-1">Catégorie</label>
+                <select
+                  id="category"
+                  value={employee}
+                  onChange={(e) => setEmployee(e.target.value)}
+                  className="w-full border rounded-lg p-2 shadow-sm"
+                >
+                  <option value="" disabled>Sélectionner un Employee</option>
+                  {employees.map(emp => (
+                    <option key={emp.id} value={emp.id}>{emp.name}</option>
+                  ))}
+                </select>
+              </div>
 
                 {/* Submit Button */}
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>

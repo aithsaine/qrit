@@ -3,6 +3,7 @@ import logo from "../../assets/img/logo.png"
 import api from "helpers/api";
 import { csrf } from "helpers/api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,7 +30,11 @@ export default function SignIn() {
           }
 
       } catch (error) {
-          setErrors(error.response.data)
+        if(error.response.data.email || error.response.data.password )
+        {
+         return toast.error("invalid Email or Password")
+        }
+        return toast.error("internal server error")
       }finally {
         setWait(false);
       }

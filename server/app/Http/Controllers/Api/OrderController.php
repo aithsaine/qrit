@@ -9,6 +9,7 @@ use App\Models\Employee;
 use App\Models\Order;
 use App\Models\OrderConfirm;
 use App\Models\OrderItem;
+use App\Models\Table;
 use App\Models\User;
 use Error;
 use Illuminate\Http\Request;
@@ -86,6 +87,10 @@ class OrderController extends Controller
         $order_confirm = new OrderConfirm();
         $order_confirm->order_id = $id;
         $order_confirm->employee_id =$user->employee->id;
+        if(!Table::whereId($order->table_id)->where("employee_id",$user->employee->id)->first()){
+            return response(["message" => "This Table Not Assinged To You", "success"=>false], 200);
+
+        }
 
         if(OrderConfirm::where("order_id",$id)->first())
         {

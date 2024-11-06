@@ -29,4 +29,7 @@ class Employee extends Model
     public function order_confirm(){
         return $this->hasMany(OrderConfirm::class);
     }
+    public function tables(){
+        return $this->hasMany(Table::class);
+    }
 }

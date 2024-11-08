@@ -4,7 +4,6 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Calendar } from 'primereact/calendar';
-import { classNames } from 'primereact/utils';
 import { motion } from 'framer-motion';
 import { Puff } from 'react-loading-icons';
 import { toast } from 'sonner';
@@ -45,6 +44,7 @@ export default function NewEmployeeModal() {
         setBirthday(null);
         setHiringDate(null);
         setAddress('');
+        setVisible(false)
         return toast.success(data.message);
       }
     } catch (error) {
@@ -96,16 +96,16 @@ export default function NewEmployeeModal() {
       {/* Modal */}
       {visible && (
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 150 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+          className="fixed inset-0 z-50 flex items-center backdrop-blur-md justify-center bg-black bg-opacity-50"
         >
-          <div className="bg-white rounded-lg shadow-lg p-6 w-[90vw] md:w-[40vw]">
+          <div className="bg-white  dark:bg-gray-900 rounded-lg shadow-lg p-6 w-[90vw] md:w-[40vw]">
             <Dialog
               header="New Employee"
-              className="text-center text-sm font-bold text-gray-800"
+              className="text-center  text-sm font-bold text-gray-800"
               visible={visible}
               onHide={() => {
                 setVisible(false);

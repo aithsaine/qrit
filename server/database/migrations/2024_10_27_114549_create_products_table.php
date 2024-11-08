@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId("category_id");
             $table->string("name");
+            $table->softDeletes();
             $table->float("price");
             $table->string("image");
             $table->string("description")->nullable();

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("lastname");
             $table->string("cin")->unique();
             $table->string("phone");
+            $table->softDeletes();
             $table->date("birthday");
             $table->date("hiring_date");
             $table->string("address");

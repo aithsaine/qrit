@@ -3,7 +3,7 @@ export const ADDCATEGORY = "ADDCATEGORY"
 
 export const ADDPRODUCT = "ADDPRODUCT"
 
-export const DELETEPRODUCT = "DELETECAT"
+export const DELETEPRODUCT = "DELETEPRODUCT"
 
 export const ADDEMPLOYEE = "ADDEMPLOYEE"
 export const ADDTABLE  = "ADDTABLE"

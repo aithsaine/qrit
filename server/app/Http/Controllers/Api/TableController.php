@@ -14,7 +14,7 @@ class TableController extends Controller
         try {
             Table::validate($request); 
             $table = new Table();
-            $table->num_table = $request->num_table;
+            $table->id = $request->num_table;
             $table->employee_id = $request->employee;
             $table->save(); 
             return response(["message" => "Table added successfully"]); 

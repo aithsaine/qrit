@@ -14,7 +14,7 @@ const formatDate = (dateString) => {
 
 const OrderCard = ({ status, date, tableNumber, totalPrice }) => {
   return (
-    <div className="max-w-md w-full  p-2 px-4 space-y-2 bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl shadow-lg transition transform hover:scale-105 hover:shadow-2xl">
+    <div className="w-full  p-2 px-4 space-y-2 bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl shadow-lg transition transform hover:scale-105 hover:shadow-2xl">
       {/* Header with Status */}
       <div className="flex items-center justify-between ">
         <h2 className="font-bold text-gray-800 dark:text-white">Order Details</h2>

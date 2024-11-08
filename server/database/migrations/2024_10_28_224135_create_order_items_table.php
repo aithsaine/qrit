@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger("order_id");
             $table->foreignId("product_id");
+            $table->softDeletes();
             $table->foreign("order_id")->references("id")->on("orders")->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer("quantity");
             $table->float("price");

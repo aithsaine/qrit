@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('order_confirms', function (Blueprint $table) {
             $table->id();
             $table->foreignId("employee_id");
+            $table->softDeletes();
             $table->foreignId("order_id");
             $table->timestamps();
         });

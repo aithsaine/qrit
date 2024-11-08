@@ -48,6 +48,7 @@ export default function NewProductModal() {
         setPrice('');
         setImage(null);
         setCategory("");
+        setVisible(false)
         return toast.success(data.message);
       }
     } catch (error) {

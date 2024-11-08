@@ -1,9 +1,30 @@
+import api from "helpers/api";
 import { useState, useEffect, useRef } from "react";
 import { FiMoreVertical, FiTrash2, FiEdit } from "react-icons/fi";
+import { deleteProduct } from "../../redux/actionCreators";
+import { toast } from "sonner";
+import { useDispatch } from "react-redux";
 
-const ProductCard = ({ id, image, name, price, totalSales = 0, onDelete, onModify, isHorizontal }) => {
+const ProductCard = ({ id, image, name, price, totalSales = 0,  isHorizontal }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const dispatch = useDispatch()
+
+  const onDelete = async()=>{
+    try{
+      const {data} = await api.delete(`api/product/${id}/delete`)
+      dispatch(deleteProduct(id))
+      toast.success(data.message)
+      
+    }catch{
+      toast.error("somethink went wrong")
+
+    }
+
+  }
+  const onModify = async()=>{
+
+  }
 
   // Toggle dropdown
   const toggleDropdown = () => {
@@ -58,7 +79,7 @@ const ProductCard = ({ id, image, name, price, totalSales = 0, onDelete, onModif
 
         {/* Dropdown Menu */}
         {isDropdownOpen && (
-          <div className="absolute top-10 right-0 bg-white dark:bg-gray-700 shadow-lg rounded-md w-32 p-2 z-20 border border-gray-200 dark:border-gray-600">
+          <div className="absolute -top-8 right-0 bg-white dark:bg-gray-700 shadow-lg rounded-md w-32 p-2 z-20 border border-gray-200 dark:border-gray-600">
             <ul className="space-y-2">
               <li
                 onClick={onModify}

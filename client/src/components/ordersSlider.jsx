@@ -43,12 +43,12 @@ const orders = useSelector(state=>state.orders)
   return (
     <div id="products" className="p-2 pb-72 ">
 
-      <div className="flex   items-end">
+      <div className="flex">
         {categories.map((cat, index) => (
           <span
             key={cat.id}
             onClick={() => handleCategoryChange(cat.id)}
-            className={`text-center ${cat?.name?.length>10?"text-sm":""}  w-1/2 md:w-[200px] mx-2 cursor-pointer  py-2 border-b-2 ${
+            className={`text-center ${cat?.name?.length>10?"text-sm":""}  w-1/2 md:w-[300px] mx-2 cursor-pointer  py-2 border-b-2 ${
               category === cat.id 
                 ? `font-bold text-[${colors[index ]}] border-[${colors[index]}]` 
                 : "text-gray-800 dark:text-white   border-gray-600"
@@ -72,11 +72,12 @@ const orders = useSelector(state=>state.orders)
           if (newCategory) setCategory(newCategory);
         }}
         initialSlide={categories.findIndex((cat) => cat.id === category)}
-        onSwiper={(swiper) => (swiperRef.current = swiper)} 
+        onSwiper={(swiper) => (swiperRef.current = swiper)}  
       >
         {categories.map((cat) => (
-          <SwiperSlide key={cat.id}>
-            <div className="flex flex-col space-y-3 mt-3 items-center">
+          <SwiperSlide 
+          key={cat.id}>
+            <div className="flex max-w-[620px] flex-col space-y-3 mt-3 items-start">
               {orders
                 ?.filter((item) => item?.status === cat.id) 
                 ?.map((elem, index) => (

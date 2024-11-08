@@ -26,6 +26,9 @@ class OrderController extends Controller
     public function createOrder(Request $request)
     {
         try {
+            $request->validate([
+                "table"=>"required|exists:tables,id"
+            ]);
             $order = new Order();
             $order->table_id = $request->table;
             $order->status = "pending";

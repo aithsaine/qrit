@@ -1,4 +1,4 @@
-import { ADDAUTHENTICATE, ADDCATEGORY, ADDEMPLOYEE, ADDPRODUCT, ADDTABLE, DELETEPRODUCT, INIITIALISE, INITIALISEDORDERS } from "./types"
+import { ADDAUTHENTICATE, ADDCATEGORY, ADDEMPLOYEE, ADDNEWORDER, ADDPRODUCT, ADDTABLE, DELETEPRODUCT, INIITIALISE, INITIALISEDORDERS } from "./types"
 
 export const initialiseData = (data)=>{
     return{
@@ -49,5 +49,12 @@ export const initialisedOrders = (orders) =>{
     return {
         type:INITIALISEDORDERS,
         payload:orders
+    }
+}
+
+export const addNewOrder = (order)=>{
+    return {
+        type:ADDNEWORDER,
+        payload:order
     }
 }

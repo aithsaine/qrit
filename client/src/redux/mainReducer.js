@@ -1,4 +1,4 @@
-import { ADDAUTHENTICATE, ADDCATEGORY, ADDEMPLOYEE, ADDPRODUCT, ADDTABLE, DELETEPRODUCT, INIITIALISE, INITIALISEDORDERS } from "./types";
+import { ADDAUTHENTICATE, ADDCATEGORY, ADDEMPLOYEE, ADDNEWORDER, ADDPRODUCT, ADDTABLE, DELETEPRODUCT, INIITIALISE, INITIALISEDORDERS } from "./types";
 
 
 
@@ -31,6 +31,12 @@ export default function mainReducer  (state=initialState,action){
             return {...state,auth:action.payload}
         case INITIALISEDORDERS:
             return {...state,orders:action.payload}
+        case ADDNEWORDER:
+            if(!state.orders.find(order=>order.id==action.payload.id))
+            {
+                return {...state,orders:[...state.orders,action.payload]}
+            }
+            return state
     }
     return state;
 

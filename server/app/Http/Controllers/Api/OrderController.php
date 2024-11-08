@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\NewOrderAdded;
 use App\Http\Controllers\Controller;
-use App\Http\Middleware\LastSeen;
 use App\Http\Resources\OrderResource;
 use App\Models\Employee;
 use App\Models\Order;
@@ -68,6 +68,8 @@ class OrderController extends Controller
             $result->saveToFile($filePath);
         
             // Return the public URL for the QR code image
+        event(new NewOrderAdded($order));
+
             return response()->json(['qr_code_url' => "order_{$order->id}.png"]);
         
         } catch (Error $error) {

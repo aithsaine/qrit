@@ -4,7 +4,7 @@ import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
 import routes from "routes.js";
-import { addAuthUser, initialiseData } from "../../redux/actionCreators";
+import { addAuthUser, addNewOrder, initialiseData } from "../../redux/actionCreators";
 import { useDispatch } from "react-redux";
 import api from "helpers/api";
 import Loading from "components/Loader";
@@ -51,9 +51,16 @@ export default function Admin() {
 }
 useEffect(()=>{
   getUser()
-  
+  window.Echo.channel('newOrderAdded')
+  .listen('NewOrderAdded', (e) => {
+    dispatch(addNewOrder(e.order))
+  });
 
 },[])
+
+
+
+
   React.useEffect(() => {
     window.addEventListener("resize", () =>
       window.innerWidth < 1200 ? setOpen(false) : setOpen(true)

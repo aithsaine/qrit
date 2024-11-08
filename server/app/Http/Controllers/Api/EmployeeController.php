@@ -37,9 +37,18 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         try{
+            $request->validate([
+                "cin"=>"required",
+                "phone"=>"required",
+                "birthday"=>"required",
+                "hiring_date"=>"required",
+                "address"=>"required"
+            ]);
             $user = new User();
+            $fname = trim((str_replace(" ","",$request->firstname)));
+            $lname = trim((str_replace(" ","",$request->lastname)));
             $user->name = $request->firstname." ".$request->lastname;
-            $user->email = strtolower($request->firstname)."-".strtolower($request->lastname)."@bwise.ma";
+            $user->email = strtolower($fname)."-".strtolower($lname)."@bwise.ma";
             $user->password = Hash::make("qrit-bwise");
             $user->save();
             Employee::validate($request);

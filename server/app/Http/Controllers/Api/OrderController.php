@@ -68,7 +68,7 @@ class OrderController extends Controller
             $result->saveToFile($filePath);
         
             // Return the public URL for the QR code image
-        event(new NewOrderAdded($order));
+        event(new NewOrderAdded($order,"new_order"));
 
             return response()->json(['qr_code_url' => "order_{$order->id}.png"]);
         
@@ -106,6 +106,8 @@ class OrderController extends Controller
         $order->status = "confirmed";
         $order->save();
         $order_confirm->save();
+        event(new NewOrderAdded($order,"confirm_order"));
+
         // Order::where("table_id",$order->table_id)->where("status","pending")->delete();
         return response(["table"=>$order->table_id,"message" => "Order confirmed successfully", "success"=>true], 200);
     } catch (Exception $error) {

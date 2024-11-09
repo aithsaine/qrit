@@ -2,26 +2,24 @@
 
 namespace App\Events;
 
-use App\Http\Resources\OrderResource;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NewOrderAdded implements ShouldBroadcastNow
+class ConfirmOrder
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $order;
-    public string $type;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($order,$type)
+    public function __construct()
     {
-        $this->order = new OrderResource($order,$type);
-        $this->type = $type;
+        //
     }
 
     /**
@@ -32,8 +30,7 @@ class NewOrderAdded implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new Channel("newOrderAdded"),
+            new PrivateChannel('channel-name'),
         ];
-
     }
 }

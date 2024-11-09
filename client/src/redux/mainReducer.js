@@ -1,4 +1,4 @@
-import { ADDAUTHENTICATE, ADDCATEGORY, ADDEMPLOYEE, ADDNEWORDER, ADDPRODUCT, ADDTABLE, DELETEPRODUCT, INIITIALISE, INITIALISEDORDERS } from "./types";
+import { ADDAUTHENTICATE, ADDCATEGORY, ADDEMPLOYEE, ADDNEWORDER, ADDPRODUCT, ADDTABLE, CONFIRMORDER, DELETEPRODUCT, INIITIALISE, INITIALISEDORDERS } from "./types";
 
 
 
@@ -37,6 +37,10 @@ export default function mainReducer  (state=initialState,action){
                 return {...state,orders:[...state.orders,action.payload]}
             }
             return state
+        case CONFIRMORDER:
+            const newOrders = state.orders.filter(item=>item.id!=action.payload.id);
+            return {...state,orders:[...newOrders,action.payload]}
+            
     }
     return state;
 

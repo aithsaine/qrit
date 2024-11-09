@@ -11,6 +11,7 @@ import Loading from "components/Loader";
 import { toast, Toaster } from 'sonner';
 import 'react-toastify/dist/ReactToastify.css';
 import cashSound from '../../assets/sounds/cash.mp3';
+import newOrderSound from "../../assets/sounds/notification.mp3"
 
 export default function Admin() {
   const location = useLocation();
@@ -21,7 +22,7 @@ export default function Admin() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [userInteracted, setUserInteracted] = useState(false);
-  const audioRef = useRef(new Audio("../../assets/sounds/notification.mp3"));
+  const audioRef = useRef(new Audio(newOrderSound));
   const audiocashRef = useRef(new Audio(cashSound));
 
   async function getUser() {

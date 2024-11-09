@@ -11,7 +11,6 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store"; // Ensure the path is correct for the store
 import Pusher from "pusher-js";
 import Echo from "laravel-echo";
-console.log(process.env.REACT_APP_PUSHER_APP_KEY)
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 if (!window.Pusher) {

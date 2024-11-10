@@ -9,7 +9,7 @@ import api from "helpers/api";
 const OrderHistory = () => {
   const { orders, employees } = useSelector((state) => state); // Fetch orders and employees from Redux state
   const [filteredOrders, setFilteredOrders] = useState([]);
-  const [filter, setFilter] = useState("week"); // Default filter
+  const [filter, setFilter] = useState("day"); // Default filter
   const [workerId, setWorkerId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -112,7 +112,7 @@ const OrderHistory = () => {
         ) : (
           <ul className="space-y-4">
             {currentItems.length > 0 ? (
-              currentItems.map((order, index) => (
+              currentItems.sort((a, b) => b.id - a.id).map((order, index) => (
                 <li
                   key={order.id || index}
                   className="flex justify-between items-center rounded-lg bg-gradient-to-r from-gray-50 to-gray-100 dark:from-navy-800 dark:to-navy-900 p-4 shadow-lg transition-all duration-200 hover:shadow-xl"

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TableResource;
 use App\Models\Table;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -17,7 +18,7 @@ class TableController extends Controller
             $table->id = $request->num_table;
             $table->employee_id = $request->employee;
             $table->save(); 
-            return response(["message" => "Table added successfully"]); 
+            return response(["message" => "Table added successfully","table" =>new TableResource($table)]); 
         } catch (ValidationException $error) {
             return response($error->errors(), 500); 
         }

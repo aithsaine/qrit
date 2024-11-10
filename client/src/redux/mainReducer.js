@@ -16,7 +16,7 @@ export default function mainReducer  (state=initialState,action){
 
     switch (action.type){
         case INIITIALISE:
-            return {...state,orders:[...action?.payload?.orders],categories:action.payload?.categories,products:action?.payload?.products,employees:action.payload.employees,items:action.payload?.items}
+            return {...state,orders:[...action?.payload?.orders],categories:action.payload?.categories,products:action?.payload?.products,employees:action.payload.employees,items:action.payload?.items,tables:action.payload.tables}
         case ADDCATEGORY:
             return {...state,categories:[...state.categories,action.payload]}
         case ADDPRODUCT:

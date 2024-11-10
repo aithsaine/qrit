@@ -42,9 +42,10 @@ class EmployeeController extends Controller
                 "phone"=>"required",
                 "birthday"=>"required",
                 "hiring_date"=>"required",
-                "address"=>"required"
+                "address"=>"required",
+                "firstname"=>"required",
+                "lastname"=>"required"
             ]);
-            Employee::validate($request);
 
             $user = new User();
             $fname = trim((str_replace(" ","",$request->firstname)));
@@ -52,6 +53,7 @@ class EmployeeController extends Controller
             $user->name = $request->firstname." ".$request->lastname;
             $user->email = strtolower($fname)."-".strtolower($lname)."@bwise.ma";
             $user->password = Hash::make("qrit-bwise");
+            $user->save();
             $employee = new Employee();
             $employee->user_id = $user->id;
             $employee->cin = $request->cin;
@@ -59,7 +61,6 @@ class EmployeeController extends Controller
             $employee->birthday = $request->birthday;
             $employee->hiring_date = $request->hiring_date;
             $employee->address = $request->address;
-            $user->save();
             $employee->save();
             return response(["message"=>"employee added with success","employee"=>new EmployeeResource($employee)]);
         }catch(ValidationException $error)

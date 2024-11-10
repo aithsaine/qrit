@@ -53,7 +53,7 @@ export default function CustomTabView({ categories }) {
 
       {/* Tabs Navigation */}
       <div className="flex border-b border-gray-300 dark:border-gray-700">
-        {categories.map((item, index) => (
+        {categories.sort((a, b) => a.id - b.id).map((item, index) => (
           <button
             key={index}
             onClick={() => handleTabClick(index)}

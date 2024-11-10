@@ -99,13 +99,16 @@ export default function NewEmployeeModal() {
           initial={{ opacity: 0, y: 150 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }}
+          onClick={() => setVisible(false)} // Close when clicking outside modal
+
           transition={{ duration: 0.3, ease: 'easeInOut' }}
           className="fixed inset-0 z-50 flex items-center backdrop-blur-md justify-center bg-black bg-opacity-50"
         >
           <div className="bg-white  dark:bg-gray-900 rounded-lg shadow-lg p-6 w-[90vw] md:w-[40vw]">
             <Dialog
               header="New Employee"
-              className="text-center  text-sm font-bold text-gray-800"
+              headerClassName="dark:bg-[#000022] shadow-sm shadow-white dark:text-white text-black bg-white  font-semibold" // Dark theme for header
+              contentClassName="dark:bg-[#000022] shadow-sm shadow-white dark:text-white text-black bg-white " // Dark theme for content
               visible={visible}
               onHide={() => {
                 setVisible(false);
@@ -120,7 +123,10 @@ export default function NewEmployeeModal() {
               style={{ width: '40vw' }}
               breakpoints={{ '960px': '75vw', '641px': '100vw' }}
             >
-              <form onSubmit={handleSubmit} className="p-fluid text-start space-y-4">
+              <form
+            onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
+              
+              onSubmit={handleSubmit} className="p-fluid text-start space-y-4">
                 {/* First Name & Last Name */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="relative">
@@ -131,7 +137,7 @@ export default function NewEmployeeModal() {
                       id="firstname"
                       value={firstname}
                       onChange={(e) => setFirstname(e.target.value)}
-                      className="w-full border rounded-lg p-2 shadow-sm"
+                      className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
                       placeholder="First Name"
                     />
                   </div>
@@ -143,7 +149,7 @@ export default function NewEmployeeModal() {
                       id="lastname"
                       value={lastname}
                       onChange={(e) => setLastname(e.target.value)}
-                      className="w-full border rounded-lg p-2 shadow-sm"
+                      className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
                       placeholder="Last Name"
                     />
                   </div>
@@ -159,7 +165,7 @@ export default function NewEmployeeModal() {
                       id="cin"
                       value={cin}
                       onChange={(e) => setCin(e.target.value)}
-                      className="w-full border rounded-lg p-2 shadow-sm"
+                      className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
                       placeholder="CIN"
                     />
                   </div>
@@ -171,7 +177,7 @@ export default function NewEmployeeModal() {
                       id="phone"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full border rounded-lg p-2 shadow-sm"
+                      className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
                       placeholder="Phone"
                     />
                   </div>
@@ -188,7 +194,7 @@ export default function NewEmployeeModal() {
                       value={birthday}
                       onChange={(e) => setBirthday(e.value)}
                       showIcon
-                      className="w-full border rounded-lg p-2 shadow-sm"
+                      className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
                       placeholder="Select Birthday"
                     />
                   </div>
@@ -201,7 +207,7 @@ export default function NewEmployeeModal() {
                       value={hiringDate}
                       onChange={(e) => setHiringDate(e.value)}
                       showIcon
-                      className="w-full border rounded-lg p-2 shadow-sm"
+                      className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
                       placeholder="Select Hiring Date"
                     />
                   </div>
@@ -216,7 +222,7 @@ export default function NewEmployeeModal() {
                     id="address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    className="w-full border rounded-lg p-2 shadow-sm"
+                    className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
                     rows={3}
                     placeholder="Address"
                   />

@@ -24,6 +24,8 @@ Route::middleware(['auth:sanctum',LastSeen::class])->get('/user', function (Requ
 Route::controller(\App\Http\Controllers\Api\CategoryController::class)->group(function(){
     Route::get("categories","index");
     Route::post("category/store","store");
+    Route::delete('category/{id}/delete','destroy');
+    Route::post("category/{id}/update","update");
 });
 //product routes 
 Route::controller(App\Http\Controllers\Api\ProductController::class)->group(function(){

@@ -1,17 +1,56 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ProductCard from './card/ProductCard';
+import UpdateCategoryModal from './category/update';
+import { MdDelete } from 'react-icons/md';
+import { toast } from 'sonner';
+import api from 'helpers/api';
+import { deleteCategory } from '../redux/actionCreators';
+import ConfirmModal from '../components/confirmModal'; // Import the ConfirmModal
 
 export default function CustomTabView({ categories }) {
   const [activeTab, setActiveTab] = useState(0);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState(null);
   const products = useSelector(state => state.products);
+  const dispatch = useDispatch();
 
   const handleTabClick = (index) => {
     setActiveTab(index);
   };
 
+  const deleteCategoryHandler = async (id) => {
+    try {
+      const { data } = await api.delete(`api/category/${id}/delete`);
+      dispatch(deleteCategory(id));
+      toast.success(data.message);
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+
+  const openConfirmModal = (id) => {
+    setCategoryToDelete(id);
+    setIsConfirmOpen(true);
+  };
+
+  const confirmDeletion = () => {
+    if (categoryToDelete) {
+      deleteCategoryHandler(categoryToDelete);
+      setIsConfirmOpen(false);
+      setCategoryToDelete(null);
+    }
+  };
+
   return (
     <div className="p-4">
+      {/* Confirm Modal */}
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={confirmDeletion}
+      />
+
       {/* Tabs Navigation */}
       <div className="flex border-b border-gray-300 dark:border-gray-700">
         {categories.map((item, index) => (
@@ -38,9 +77,16 @@ export default function CustomTabView({ categories }) {
               activeTab === index ? 'opacity-100' : 'opacity-0 hidden'
             }`}
           >
-            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-              {item.name}
-            </h3>
+            <div className="mb-2 text-gray-900 dark:text-white flex justify-start space-x-2">
+              <UpdateCategoryModal category={item}/>
+              <button
+                onClick={() => openConfirmModal(item.id)}
+                className="flex items-center space-x-2 rounded-lg bg-red-500 text-xs px-4 py-1 font-semibold text-white shadow-lg transition-transform duration-300 ease-in-out hover:bg-red-600"
+              >
+                <MdDelete className='text-xl'/>
+                Delete
+              </button>
+            </div>
 
             {/* Small Horizontal Cards */}
             <div className="space-y-4">
@@ -53,7 +99,7 @@ export default function CustomTabView({ categories }) {
                     name={product.name}
                     price={product.price}
                     image={product.image}
-                    isHorizontal={true} // New prop to change the layout
+                    isHorizontal={true}
                   />
                 ))}
             </div>

@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table("employees",function(Blueprint $table){
             $table->dropColumn("firstname");
             $table->dropColumn("lastname");
-            $table->foreignId("user_id")->after('id');
+            $table->unsignedBigInteger("user_id")->after('id');
+            $table->foreign("user_id")->references("id")->on("users")->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

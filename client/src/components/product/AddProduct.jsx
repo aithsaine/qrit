@@ -96,13 +96,18 @@ export default function NewProductModal() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }}
+          onClick={() => setVisible(false)} // Close when clicking outside modal
+
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+          className="fixed inset-0 z-50 flex  backdrop-blur-md items-center justify-center bg-black bg-opacity-50"
         >
-          <div className="bg-white rounded-lg shadow-lg p-6 w-[90vw] md:w-[40vw]">
+          <div
+          
+          className="bg-white rounded-lg shadow-lg p-6 w-[90vw] md:w-[40vw]">
             <Dialog
               header="Nouveau Produit"
-              className="text-center text-sm font-bold text-gray-800"
+              headerClassName="dark:bg-[#000022] shadow-sm shadow-white dark:text-white text-black bg-white  font-semibold" // Dark theme for header
+              contentClassName="dark:bg-[#000022] shadow-sm shadow-white dark:text-white text-black bg-white " // Dark theme for content
               visible={visible}
               onHide={() => {
                 setVisible(false);
@@ -115,7 +120,10 @@ export default function NewProductModal() {
               style={{ width: '40vw' }}
               breakpoints={{ '960px': '75vw', '641px': '100vw' }}
             >
-              <form className="p-fluid text-start space-y-2">
+              <form
+            onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
+              
+              className="p-fluid text-start space-y-2">
                 {/* Product Name Input */}
                 <div className="relative">
                   <label htmlFor="name" className={classNames('block text-gray-600 mb-1')}>
@@ -125,7 +133,7 @@ export default function NewProductModal() {
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className={classNames('w-full border rounded-lg p-2 shadow-sm')}
+                    className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
                     placeholder="Ex : Café chaud"
                   />
                 </div>
@@ -139,9 +147,9 @@ export default function NewProductModal() {
                     id="description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className={classNames('w-full border rounded-lg p-2 shadow-sm')}
+                    className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
                     rows={3}
-                    placeholder="Description"
+                    placeholder="Description of the plate"
                   />
                 </div>
 
@@ -154,7 +162,7 @@ export default function NewProductModal() {
                     id="price"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    className={classNames('w-full border rounded-lg p-2 shadow-sm')}
+                    className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
                     placeholder="Ex : 20.99"
                   />
                 </div>
@@ -166,8 +174,8 @@ export default function NewProductModal() {
                   id="category"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full border rounded-lg p-2 shadow-sm"
-                >
+                  className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                  >
                   <option value="" disabled>Sélectionner une catégorie</option>
                   {categories.map(cat => (
                     <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -176,8 +184,14 @@ export default function NewProductModal() {
               </div>
 
                 {/* Product Image Upload */}
-                <div className="relative">
-                  <label htmlFor="image" className={classNames('block text-gray-600 mb-1')}>
+                <div
+                
+                className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                
+                >
+                  <label htmlFor="image"
+                   className={classNames('block text-gray-600 mb-1')}
+                   >
                     Image
                   </label>
                   <FileUpload
@@ -187,6 +201,7 @@ export default function NewProductModal() {
                     accept="image/*"
                     auto
                     chooseLabel="Choisir une image"
+                    className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
                     uploadHandler={onUpload}
                   />
                 </div>

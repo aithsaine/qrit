@@ -1,7 +1,6 @@
 import PieChartCard from "views/admin/default/components/PieChartCard";
 import { MdBarChart, MdDashboard } from "react-icons/md";
 
-import { columnsDataCheck, columnsDataComplex } from "./variables/columnsData";
 
 import Widget from "components/widget/Widget";
 import CheckTable from "views/admin/default/components/CheckTable";
@@ -15,27 +14,8 @@ import OrderHistory from "./components/OrderHistory";
 import MenuPopularity from "./components/TotalSpent";
 import api from "helpers/api";
 
-const formatDate = (dateString) => {
-  // Create a Date object from the ISO date string
-  const date = new Date(dateString);
 
-  // Format date parts
-  const dayName = new Intl.DateTimeFormat("en-GB", { weekday: "long" }).format(date);
-  const day = date.getDate();
-  const month = new Intl.DateTimeFormat("en-GB", { month: "long" }).format(date);
-  const year = date.getFullYear();
-
-  // Format time parts
-  const hours = date.getHours().toString().padStart(2, "0");
-  const minutes = date.getMinutes().toString().padStart(2, "0");
-  const seconds = date.getSeconds().toString().padStart(2, "0");
-
-  // Combine into the desired format
-  return `${dayName} ${day} ${month} ${year} at ${hours}:${minutes}:${seconds}`;
-};
 const Dashboard = () => {
-  const { employees } = useSelector((state) => state);
-  const [tableDataComplex, setTableDataComplex] = useState();
 
   const [data, setData] = useState([]);
 
@@ -52,17 +32,6 @@ const Dashboard = () => {
     getData();
   }, []);
 
-  useEffect(() => {
-    if (employees) {
-      const formattedData = employees.map((item) => ({
-        worker: item?.name || "N/A",
-        status: item?.last_seen || "N/A",
-        last_order: item?.last_order.length>0? formatDate(item?.last_order[0].created_at):'-', // Replace with actual data if available
-        progress: 28, // Replace with actual progress if available
-      }));
-      setTableDataComplex(formattedData);
-    }
-  }, [employees]);
 
 
   
@@ -116,10 +85,8 @@ const Dashboard = () => {
     <div className="mt-5 grid grid-cols-1 gap-5 xl:grid-cols-2">
          {/* Complex Table , Task & Calendar */}
 
-       {tableDataComplex&&  <ComplexTable
-        columnsData={columnsDataComplex}
-        tableData={tableDataComplex}
-      />}
+       <ComplexTable
+      />
 
       {/* Traffic chart & Pie Chart */}
 

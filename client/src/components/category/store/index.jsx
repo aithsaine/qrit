@@ -124,7 +124,7 @@ export default function NewCategoryModal() {
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                    className="w-full dark:bg-[#000022] border  dark:text-white text-black  rounded-lg p-2 shadow-sm"
                     placeholder="Ex : Café chaud"
                   />
                 </div>
@@ -141,7 +141,7 @@ export default function NewCategoryModal() {
                     id="description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                    className="w-full dark:bg-[#000022] border  dark:text-white text-black  rounded-lg p-2 shadow-sm"
                     rows={3}
                     placeholder="Description"
                   />
@@ -161,7 +161,7 @@ export default function NewCategoryModal() {
                     customUpload
                     accept="image/*"
                     auto
-                    className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                    className="w-full dark:bg-[#000022] border  dark:text-white text-black  rounded-lg p-2 shadow-sm"
 
                     chooseLabel="Choisir une image"
                     uploadHandler={onUpload}

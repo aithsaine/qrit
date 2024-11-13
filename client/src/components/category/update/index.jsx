@@ -10,10 +10,9 @@ import { Puff } from "react-loading-icons";
 import { toast } from "sonner";
 import api from "helpers/api";
 import { useDispatch } from "react-redux";
-import {  updateCategory } from "../../../redux/actionCreators";
-import { MdUpdate } from "react-icons/md";
+import { updateCategory } from "../../../redux/actionCreators";
 
-export default function UpdateCategoryModal({category}) {
+export default function UpdateCategoryModal({ category }) {
   const [visible, setVisible] = useState(false);
   const [name, setName] = useState(category.name);
   const [description, setDescription] = useState(category.description);
@@ -21,14 +20,11 @@ export default function UpdateCategoryModal({category}) {
   const [wait, setWait] = useState(false);
   const dispatch = useDispatch();
 
-  // Handle form submission
-
   const update = async () => {
     try {
       const { data } = await api.post(
         `api/category/${category.id}/update`,
-         { name, description, image },
-        
+        { name, description, image },
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -36,96 +32,84 @@ export default function UpdateCategoryModal({category}) {
         }
       );
       setVisible(false);
-        dispatch(updateCategory(data.category));
-         toast.success(data.message);
-   
-      } catch (error) {
-
-       toast.error("somethink went wrong");
+      dispatch(updateCategory(data.category));
+      toast.success(data.message);
+    } catch (error) {
+      toast.error("Something went wrong");
     } finally {
       setWait(false);
     }
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setWait(true);
     update();
   };
 
-  // Handle image upload
   const onUpload = (e) => setImage(e.files[0]);
+
   return (
-    <div className="   items-center justify-center">
+    <div className="items-center justify-center">
       {/* Button to trigger the modal */}
-      <motion.div  whileTap={{ scale: 0.95 }}>
+      <motion.div whileTap={{ scale: 0.95 }}>
         <Button
-          label="update"
-          className="relative  rounded-lg bg-[blue] text-xs px-4 py-2 font-semibold text-white shadow-lg transition-transform duration-300 ease-in-out hover:bg-blueSecondary"
+          label="Update"
+          className="relative rounded-lg bg-blue-600 text-xs px-4 py-2 font-semibold text-white shadow-lg transition-transform duration-300 ease-in-out hover:bg-blue-700"
           icon="pi pi-external-link"
           onClick={() => setVisible(true)}
         />
       </motion.div>
-      {/* Smaller Dialog Modal */}
+
+      {/* Modal */}
       {visible && (
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }}
-          onClick={() => setVisible(false)} // Close when clicking outside modal
-
+          onClick={() => setVisible(false)}
           transition={{ duration: 0.3, ease: "easeInOut" }}
           className="bg-black fixed inset-0 z-50 flex backdrop-blur-md items-center justify-center bg-opacity-50"
         >
-          <div className="w-[90vw] rounded-lg bg-white p-6 shadow-lg md:w-[40vw]">
+          <div className="w-[90vw] rounded-lg bg-white dark:bg-[#000022] p-6 shadow-lg md:w-[40vw]">
             <Dialog
-              header="Nouvelle Catégorie"
-              className="text-center  text-sm font-bold text-gray-800"
+              header="Update Category"
+              headerClassName="dark:bg-[#000022] shadow-sm shadow-white dark:text-white text-black font-semibold"
+              contentClassName="dark:bg-[#000022] dark:text-white text-black"
               visible={visible}
-              onHide={() => {
-                setVisible(false);
-              }}
+              onHide={() => setVisible(false)}
               style={{ width: "40vw" }}
               breakpoints={{ "960px": "75vw", "641px": "100vw" }}
             >
               <form
-            onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
+                onClick={(e) => e.stopPropagation()}
                 onSubmit={handleSubmit}
                 className="p-fluid space-y-2 text-start"
               >
                 {/* Category Name Input */}
                 <div className="relative">
-                  <label
-                    htmlFor="name"
-                    className={classNames("mb-1 block text-gray-600")}
-                  >
-                    Nom de la catégorie
+                  <label htmlFor="name" className="mb-1 block text-gray-600 dark:text-gray-300">
+                    Category Name
                   </label>
                   <InputText
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className={classNames(
-                      "w-full rounded-lg border p-2 shadow-sm"
-                    )}
-                    placeholder="Ex : Café chaud"
+                    className="w-full dark:bg-[#000022] border dark:text-white text-black rounded-lg p-2 shadow-sm"
+                    placeholder="E.g., Hot Coffee"
                   />
                 </div>
 
                 {/* Category Description Input */}
                 <div className="relative">
-                  <label
-                    htmlFor="description"
-                    className={classNames("mb-1 block text-gray-600")}
-                  >
+                  <label htmlFor="description" className="mb-1 block text-gray-600 dark:text-gray-300">
                     Description
                   </label>
                   <InputTextarea
                     id="description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className={classNames(
-                      "w-full rounded-lg border p-2 shadow-sm"
-                    )}
+                    className="w-full dark:bg-[#000022] border dark:text-white text-black rounded-lg p-2 shadow-sm"
                     rows={3}
                     placeholder="Description"
                   />
@@ -133,33 +117,30 @@ export default function UpdateCategoryModal({category}) {
 
                 {/* Category Image Upload */}
                 <div className="relative">
-                  <label
-                    htmlFor="image"
-                    className={classNames("mb-1 block text-gray-600")}
-                  >
+                  <label htmlFor="image" className="mb-1 block text-gray-600 dark:text-gray-300">
                     Image
                   </label>
                   <FileUpload
                     id="image"
                     name="demo[]"
                     customUpload
-                    accept="image/*"
+                    contentClassName="dark:bg-[#000022]"
+headerStyle={{backgroundColor:"transparent"}}                    accept="image/*"
                     auto
-                    chooseLabel="Choisir une image"
+                    chooseLabel="Choose Image"
+                    chooseOptions={{
+                      className: "w-full dark:bg-[#000022] border dark:text-white text-black rounded-lg p-2 shadow-sm",
+                    }}
+                  
                     uploadHandler={onUpload}
                   />
                 </div>
 
                 {/* Submit Button */}
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button
-                    label={
-                      wait ? <Puff className="w-4 text-center" /> : "update"
-                    }
-                    className="flex h-[40px] w-full items-center justify-center rounded-lg bg-[#EF233C] p-2 font-bold text-white shadow-lg transition-transform duration-300 ease-in-out hover:bg-[#D90429]"
+                    label={wait ? <Puff className="w-4 text-center" /> : "Update"}
+                    className="flex h-[40px] w-full items-center justify-center rounded-lg bg-red-600 p-2 font-bold text-white shadow-lg transition-transform duration-300 ease-in-out hover:bg-red-700"
                     type="submit"
                   />
                 </motion.div>

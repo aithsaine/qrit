@@ -1,4 +1,4 @@
-import { ADDAUTHENTICATE, ADDCATEGORY, ADDEMPLOYEE, ADDNEWORDER, ADDPRODUCT, ADDTABLE, CONFIRMORDER, DELETECATEGORY, DELETEPRODUCT, INIITIALISE, INITIALISEDORDERS, UPDATECATEGORY } from "./types";
+import { ADDAUTHENTICATE, ADDCATEGORY, ADDEMPLOYEE, ADDNEWORDER, ADDPRODUCT, ADDTABLE, CONFIRMORDER, DELETECATEGORY, DELETEPRODUCT, INIITIALISE, INITIALISEDORDERS, UPDATECATEGORY, UPDATEEMPLOYEESTATUS } from "./types";
 
 
 
@@ -45,6 +45,10 @@ export default function mainReducer  (state=initialState,action){
         case UPDATECATEGORY:
             let newcategories = state.categories.filter(item=>item.id!=action.payload.id);
             return {...state,categories:[...newcategories,action.payload]}
+
+        case UPDATEEMPLOYEESTATUS:
+            let EmployeesFilter = state.employees.filter(emp=>emp.id != action.payload.id)
+            return {...state,employees:[...EmployeesFilter,action.payload]}
 
 
             

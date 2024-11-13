@@ -137,7 +137,7 @@ export default function NewEmployeeModal() {
                       id="firstname"
                       value={firstname}
                       onChange={(e) => setFirstname(e.target.value)}
-                      className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                      className="w-full dark:bg-[#000022] border dark:text-white text-black  rounded-lg p-2 shadow-sm"
                       placeholder="First Name"
                     />
                   </div>
@@ -149,7 +149,7 @@ export default function NewEmployeeModal() {
                       id="lastname"
                       value={lastname}
                       onChange={(e) => setLastname(e.target.value)}
-                      className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                      className="w-full dark:bg-[#000022] border dark:text-white text-black  rounded-lg p-2 shadow-sm"
                       placeholder="Last Name"
                     />
                   </div>
@@ -165,7 +165,7 @@ export default function NewEmployeeModal() {
                       id="cin"
                       value={cin}
                       onChange={(e) => setCin(e.target.value)}
-                      className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                      className="w-full dark:bg-[#000022] border dark:text-white text-black  rounded-lg p-2 shadow-sm"
                       placeholder="CIN"
                     />
                   </div>
@@ -177,7 +177,7 @@ export default function NewEmployeeModal() {
                       id="phone"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                      className="w-full dark:bg-[#000022] border dark:text-white text-black  rounded-lg p-2 shadow-sm"
                       placeholder="Phone"
                     />
                   </div>
@@ -194,7 +194,7 @@ export default function NewEmployeeModal() {
                       value={birthday}
                       onChange={(e) => setBirthday(e.value)}
                       showIcon
-                      className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                      className="w-full dark:bg-[#000022] border dark:text-white text-black  rounded-lg p-2 shadow-sm"
                       placeholder="Select Birthday"
                     />
                   </div>
@@ -207,7 +207,7 @@ export default function NewEmployeeModal() {
                       value={hiringDate}
                       onChange={(e) => setHiringDate(e.value)}
                       showIcon
-                      className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                      className="w-full dark:bg-[#000022] border dark:text-white text-black  rounded-lg p-2 shadow-sm"
                       placeholder="Select Hiring Date"
                     />
                   </div>
@@ -222,7 +222,7 @@ export default function NewEmployeeModal() {
                     id="address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                    className="w-full dark:bg-[#000022] border dark:text-white text-black  rounded-lg p-2 shadow-sm"
                     rows={3}
                     placeholder="Address"
                   />

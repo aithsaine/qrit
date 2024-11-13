@@ -97,7 +97,7 @@ export default function NewTableModal() {
                     id="tableNumber"
                     value={tableNumber}
                     onChange={(e) => setTableNumber(e.target.value)}
-                    className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                    className="w-full dark:bg-[#000022] border  dark:text-white text-black  rounded-lg p-2 shadow-sm"
                     placeholder="Ex: 5"
                   />
                 </div>
@@ -111,7 +111,7 @@ export default function NewTableModal() {
                     id="employee"
                     value={employee}
                     onChange={(e) => setEmployee(e.target.value)}
-                    className="w-full dark:bg-gray-800 border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                    className="w-full dark:bg-gray-800 border  dark:text-white text-black  rounded-lg p-2 shadow-sm"
                   >
                     <option value="" disabled>
                       Sélectionner un Employé

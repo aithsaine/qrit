@@ -133,7 +133,7 @@ export default function NewProductModal() {
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                    className="w-full dark:bg-[#000022] border  dark:text-white text-black  rounded-lg p-2 shadow-sm"
                     placeholder="Ex : Café chaud"
                   />
                 </div>
@@ -147,7 +147,7 @@ export default function NewProductModal() {
                     id="description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                    className="w-full dark:bg-[#000022] border  dark:text-white text-black  rounded-lg p-2 shadow-sm"
                     rows={3}
                     placeholder="Description of the plate"
                   />
@@ -162,7 +162,7 @@ export default function NewProductModal() {
                     id="price"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                    className="w-full dark:bg-[#000022] border  dark:text-white text-black  rounded-lg p-2 shadow-sm"
                     placeholder="Ex : 20.99"
                   />
                 </div>
@@ -174,7 +174,7 @@ export default function NewProductModal() {
                   id="category"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                  className="w-full dark:bg-[#000022] border  dark:text-white text-black  rounded-lg p-2 shadow-sm"
                   >
                   <option value="" disabled>Sélectionner une catégorie</option>
                   {categories.map(cat => (
@@ -186,7 +186,7 @@ export default function NewProductModal() {
                 {/* Product Image Upload */}
                 <div
                 
-                className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                className="w-full dark:bg-[#000022] border  dark:text-white text-black  rounded-lg p-2 shadow-sm"
                 
                 >
                   <label htmlFor="image"
@@ -201,7 +201,7 @@ export default function NewProductModal() {
                     accept="image/*"
                     auto
                     chooseLabel="Choisir une image"
-                    className="w-full dark:bg-[#000022] border border-gray-800 dark:text-white text-black  rounded-lg p-2 shadow-sm"
+                    className="w-full dark:bg-[#000022] border  dark:text-white text-black  rounded-lg p-2 shadow-sm"
                     uploadHandler={onUpload}
                   />
                 </div>

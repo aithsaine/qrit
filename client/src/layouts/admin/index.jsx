@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Routes, Route, Navigate, useLocation, Outlet, useNavigate } from "react-router-dom";
+import {  useLocation, Outlet, useNavigate } from "react-router-dom";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
 import routes from "routes.js";
-import { addAuthUser, addNewOrder, confirmOrder, initialiseData } from "../../redux/actionCreators";
+import { addAuthUser, addNewOrder, confirmOrder, initialiseData, updateEmployeeStatus } from "../../redux/actionCreators";
 import { useDispatch, useSelector } from "react-redux";
 import api from "helpers/api";
 import Loading from "components/Loader";
@@ -88,6 +88,20 @@ export default function Admin() {
     );
   }, []);
 
+  useEffect(()=>{
+    window.Echo.channel('admin_employee_status').listen('EmployeStatusUpdate', (e) => {
+      console.log(e?.employee)
+      dispatch(updateEmployeeStatus(e?.employee))
+    })
+
+    return ()=>{
+      window.Echo.leaveChannel("admin_employee_status")
+
+    }
+
+  },[])
+
+ 
   useEffect(() => {
     getActiveRoute(routes);
   }, [location.pathname]);

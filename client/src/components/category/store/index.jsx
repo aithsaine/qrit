@@ -159,11 +159,15 @@ export default function NewCategoryModal() {
                     id="image"
                     name="demo[]"
                     customUpload
+                    contentClassName="dark:bg-[#000022]"
+                    headerStyle={{ backgroundColor: "transparent" }}
                     accept="image/*"
                     auto
-                    className="w-full dark:bg-[#000022] border  dark:text-white text-black  rounded-lg p-2 shadow-sm"
-
-                    chooseLabel="Choisir une image"
+                    chooseLabel="Choose Image"
+                    chooseOptions={{
+                      className:
+                        "w-full dark:bg-[#000022] border dark:text-white text-black rounded-lg p-2 shadow-sm",
+                    }}
                     uploadHandler={onUpload}
                   />
                 </div>

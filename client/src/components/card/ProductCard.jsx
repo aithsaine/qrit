@@ -4,101 +4,113 @@ import { FiMoreVertical, FiTrash2, FiEdit } from "react-icons/fi";
 import { deleteProduct } from "../../redux/actionCreators";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
+import { MdDelete, MdUpdate } from "react-icons/md";
+import ConfirmModal from "components/confirmModal";
+import UpdateProductModal from "components/product/UpdateProduct";
 
-const ProductCard = ({ id, image, name, price, totalSales = 0,  isHorizontal }) => {
+const ProductCard = ({
+  id,
+  image,
+  name,
+  description,
+  price,
+  totalSales = 0,
+  isHorizontal,
+  category,
+}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const [ProductToDelete, setProductToDelete] = useState(null);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-  const onDelete = async()=>{
-    try{
-      const {data} = await api.delete(`api/product/${id}/delete`)
-      dispatch(deleteProduct(id))
-      toast.success(data.message)
-      
-    }catch{
-      toast.error("somethink went wrong")
-
+  const onDelete = async () => {
+    try {
+      const { data } = await api.delete(`api/product/${id}/delete`);
+      dispatch(deleteProduct(id));
+      toast.success(data.message);
+    } catch {
+      toast.error("somethink went wrong");
     }
-
-  }
-  const onModify = async()=>{
-
-  }
+  };
 
   // Toggle dropdown
-  const toggleDropdown = () => {
-    setIsDropdownOpen((prev) => !prev);
+
+  const openConfirmModal = (id) => {
+    setProductToDelete(id);
+    setIsConfirmOpen(true);
+  };
+
+  const confirmDeletion = () => {
+    if (ProductToDelete) {
+      onDelete(ProductToDelete);
+      setIsConfirmOpen(false);
+      setProductToDelete(null);
+    }
   };
 
   // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  
 
   return (
     <div
-      className={`relative bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden ${
-        isHorizontal ? "p-4 flex items-center space-x-4" : "p-6"
-      } hover:shadow-2xl transition-all duration-300`}
+      className={`relative overflow-hidden rounded-lg bg-white shadow-lg dark:bg-gray-800 ${
+        isHorizontal ? "flex items-center space-x-4 p-4" : "p-6"
+      } transition-all duration-300 hover:shadow-2xl`}
     >
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={confirmDeletion}
+      />
       {/* Product Image */}
-      <div className={`w-20 h-20 ${isHorizontal ? "flex-none" : "w-48 h-48"} rounded-lg overflow-hidden shadow-md`}>
+      <div
+        className={`h-20 w-20 ${
+          isHorizontal ? "flex-none" : "h-48 w-48"
+        } overflow-hidden rounded-lg shadow-md`}
+      >
         <img
-          src={`${process.env.REACT_APP_BACKEND_URI}/public/products/${image}`}
+          src={`${process.env.REACT_APP_BACKEND_URI}/products/${image}`}
           alt={name}
-          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
         />
       </div>
 
       {/* Product Info */}
       <div className={`flex-1 ${isHorizontal ? "ml-4" : "ml-8"} space-y-1`}>
-        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{name}</h2>
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+          {name}
+        </h2>
         <p className="text-md font-bold text-red-500">${price}</p>
         <p className="text-sm text-gray-500">
-          Total Sales: <span className="font-medium text-gray-700 dark:text-gray-300">{totalSales}</span>
+          Total Sales:{" "}
+          <span className="font-medium text-gray-700 dark:text-gray-300">
+            {totalSales}
+          </span>
         </p>
       </div>
       {/* Dropdown Button */}
-      <div className="relative" ref={dropdownRef}>
-        <button
-          onClick={toggleDropdown}
-          className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
-        >
-          <FiMoreVertical size={20} className="text-gray-600 dark:text-gray-400" />
-        </button>
+        
 
-        {/* Dropdown Menu */}
-        {isDropdownOpen && (
-          <div className="absolute -top-8 right-0 bg-white dark:bg-gray-700 shadow-lg rounded-md w-32 p-2 z-20 border border-gray-200 dark:border-gray-600">
+          <div className="absolute w-[40px] right-8  z-20  rounded-md  p-2 ">
             <ul className="space-y-2">
-              <li
-                onClick={onModify}
-                className="flex items-center cursor-pointer px-3 py-2 hover:bg-blue-100 dark:hover:bg-blue-800 text-blue-600 dark:text-blue-300 hover:text-blue-800 dark:hover:text-white transition-colors duration-200 rounded-md"
+              <UpdateProductModal
+                id={id}
+                description={description}
+                name={name}
+                price={price}
+                category={category}
+              />
+
+              <button
+                onClick={() => openConfirmModal(id)}
+                className="flex items-center space-x-2 rounded-lg bg-red-500 px-4 py-1 text-xs font-semibold text-white shadow-lg transition-transform duration-300 ease-in-out hover:bg-red-600"
               >
-                <FiEdit className="mr-2" size={18} />
-                <span className="text-sm font-medium">Modify</span>
-              </li>
-              <li
-                onClick={() => onDelete(id)}
-                className="flex items-center cursor-pointer px-3 py-2 text-red-600 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-800 hover:text-red-800 dark:hover:text-white transition-colors duration-200 rounded-md"
-              >
-                <FiTrash2 className="mr-2" size={18} />
-                <span className="text-sm font-medium">Delete</span>
-              </li>
+                <MdDelete className="text-xl" />
+                
+              </button>
             </ul>
           </div>
-        )}
-      </div>
     </div>
   );
 };

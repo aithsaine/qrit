@@ -98,6 +98,8 @@ export default function CustomTabView({ categories }) {
                     id={product.id}
                     name={product.name}
                     price={product.price}
+                    description={product?.description}
+                    category={product?.category}
                     image={product.image}
                     isHorizontal={true}
                   />

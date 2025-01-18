@@ -55,7 +55,7 @@ export default function UpdateCategoryModal({ category }) {
       <motion.div whileTap={{ scale: 0.95 }}>
         <Button
           label="Update"
-          className="relative rounded-lg bg-blue-600 text-xs px-4 py-2 font-semibold text-white shadow-lg transition-transform duration-300 ease-in-out hover:bg-blue-700"
+          className="relative rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-lg transition-transform duration-300 ease-in-out hover:bg-blue-700"
           icon="pi pi-external-link"
           onClick={() => setVisible(true)}
         />
@@ -69,9 +69,9 @@ export default function UpdateCategoryModal({ category }) {
           exit={{ opacity: 0, y: -50 }}
           onClick={() => setVisible(false)}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="bg-black fixed inset-0 z-50 flex backdrop-blur-md items-center justify-center bg-opacity-50"
+          className="bg-black fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 backdrop-blur-md"
         >
-          <div className="w-[90vw] rounded-lg bg-white dark:bg-[#000022] p-6 shadow-lg md:w-[40vw]">
+          <div className="w-[90vw] rounded-lg bg-white p-6 shadow-lg dark:bg-[#000022] md:w-[40vw]">
             <Dialog
               header="Update Category"
               headerClassName="dark:bg-[#000022] shadow-sm shadow-white dark:text-white text-black font-semibold"
@@ -88,28 +88,34 @@ export default function UpdateCategoryModal({ category }) {
               >
                 {/* Category Name Input */}
                 <div className="relative">
-                  <label htmlFor="name" className="mb-1 block text-gray-600 dark:text-gray-300">
+                  <label
+                    htmlFor="name"
+                    className="mb-1 block text-gray-600 dark:text-gray-300"
+                  >
                     Category Name
                   </label>
                   <InputText
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full dark:bg-[#000022] border dark:text-white text-black rounded-lg p-2 shadow-sm"
+                    className="text-black w-full rounded-lg border p-2 shadow-sm dark:bg-[#000022] dark:text-white"
                     placeholder="E.g., Hot Coffee"
                   />
                 </div>
 
                 {/* Category Description Input */}
                 <div className="relative">
-                  <label htmlFor="description" className="mb-1 block text-gray-600 dark:text-gray-300">
+                  <label
+                    htmlFor="description"
+                    className="mb-1 block text-gray-600 dark:text-gray-300"
+                  >
                     Description
                   </label>
                   <InputTextarea
                     id="description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="w-full dark:bg-[#000022] border dark:text-white text-black rounded-lg p-2 shadow-sm"
+                    className="text-black w-full rounded-lg border p-2 shadow-sm dark:bg-[#000022] dark:text-white"
                     rows={3}
                     placeholder="Description"
                   />
@@ -117,7 +123,10 @@ export default function UpdateCategoryModal({ category }) {
 
                 {/* Category Image Upload */}
                 <div className="relative">
-                  <label htmlFor="image" className="mb-1 block text-gray-600 dark:text-gray-300">
+                  <label
+                    htmlFor="image"
+                    className="mb-1 block text-gray-600 dark:text-gray-300"
+                  >
                     Image
                   </label>
                   <FileUpload
@@ -125,21 +134,27 @@ export default function UpdateCategoryModal({ category }) {
                     name="demo[]"
                     customUpload
                     contentClassName="dark:bg-[#000022]"
-headerStyle={{backgroundColor:"transparent"}}                    accept="image/*"
+                    headerStyle={{ backgroundColor: "transparent" }}
+                    accept="image/*"
                     auto
                     chooseLabel="Choose Image"
                     chooseOptions={{
-                      className: "w-full dark:bg-[#000022] border dark:text-white text-black rounded-lg p-2 shadow-sm",
+                      className:
+                        "w-full dark:bg-[#000022] border dark:text-white text-black rounded-lg p-2 shadow-sm",
                     }}
-                  
                     uploadHandler={onUpload}
                   />
                 </div>
 
                 {/* Submit Button */}
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <Button
-                    label={wait ? <Puff className="w-4 text-center" /> : "Update"}
+                    label={
+                      wait ? <Puff className="w-4 text-center" /> : "Update"
+                    }
                     className="flex h-[40px] w-full items-center justify-center rounded-lg bg-red-600 p-2 font-bold text-white shadow-lg transition-transform duration-300 ease-in-out hover:bg-red-700"
                     type="submit"
                   />

@@ -4,7 +4,6 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { FileUpload } from 'primereact/fileupload';
-import { Dropdown } from 'primereact/dropdown';
 import { classNames } from 'primereact/utils';
 import { motion } from 'framer-motion';
 import { Puff } from "react-loading-icons";
@@ -12,13 +11,14 @@ import { toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct } from '../../redux/actionCreators';
 import api from 'helpers/api';
+import { MdUpdate } from 'react-icons/md';
 
-export default function NewProductModal() {
+export default function UpdateProductModal({id,Description,Name,Price,Category}) {
   const [visible, setVisible] = useState(false);
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState("");
+  const [name, setName] = useState(Name??'');
+  const [description, setDescription] = useState(Description??'');
+  const [price, setPrice] = useState(Price??'');
+  const [category, setCategory] = useState(Category??"");
   const [image, setImage] = useState(null);
   const [wait, setWait] = useState(false);
   const dispatch = useDispatch();
@@ -82,11 +82,10 @@ export default function NewProductModal() {
   return (
     <div className=" justify-center items-center">
       {/* Button to trigger the modal */}
-      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <motion.div whileTap={{ scale: 0.95 }}>
         <Button
-          label="Ajouter un plat"
-          className="relative w-full py-2 px-6 bg-[#EF233C] text-white font-semibold rounded-lg shadow-lg hover:bg-[#D90429] transition-transform duration-300 ease-in-out"
-          icon="pi pi-external-link"
+          label={<MdUpdate className='text-xl' />}
+          className=" relative flex items-center space-x-2 rounded-lg bg-blue-500 px-4 py-1 text-xs font-semibold text-white shadow-lg transition-transform duration-300 ease-in-out hover:bg-blue-600"
           onClick={() => setVisible(true)}
         />
       </motion.div>

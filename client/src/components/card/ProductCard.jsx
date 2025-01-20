@@ -18,8 +18,6 @@ const ProductCard = ({
   isHorizontal,
   category,
 }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
   const dispatch = useDispatch();
   const [ProductToDelete, setProductToDelete] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -96,10 +94,10 @@ const ProductCard = ({
             <ul className="space-y-2">
               <UpdateProductModal
                 id={id}
-                description={description}
-                name={name}
-                price={price}
-                category={category}
+                Description={description}
+                Name={name}
+                Price={price}
+                Category={category}
               />
 
               <button

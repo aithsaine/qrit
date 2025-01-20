@@ -31,6 +31,8 @@ Route::controller(\App\Http\Controllers\Api\CategoryController::class)->group(fu
 Route::controller(App\Http\Controllers\Api\ProductController::class)->group(function(){
     Route::get("products","index");
     Route::post("product/store","store");
+    Route::post("product/update","update");
+
     Route::delete("product/{id}/delete","destroy");
 });
 

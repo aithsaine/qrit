@@ -1,4 +1,4 @@
-import { ADDAUTHENTICATE, ADDCATEGORY, ADDEMPLOYEE, ADDNEWORDER, ADDPRODUCT, ADDTABLE, CONFIRMORDER, DELETECATEGORY, DELETEPRODUCT, INIITIALISE, INITIALISEDORDERS, UPDATECATEGORY, UPDATEEMPLOYEESTATUS } from "./types"
+import { ADDAUTHENTICATE, ADDCATEGORY, ADDEMPLOYEE, ADDNEWORDER, ADDPRODUCT, ADDTABLE, CONFIRMORDER, DELETECATEGORY, DELETEPRODUCT, INIITIALISE, INITIALISEDORDERS, UPDATECATEGORY, UPDATEEMPLOYEESTATUS, UPDATEPRODUCT } from "./types"
 
 export const initialiseData = (data)=>{
     return{
@@ -85,5 +85,12 @@ export const updateEmployeeStatus = (employee)=>{
     return {
         type:UPDATEEMPLOYEESTATUS,
         payload:employee
+    }
+}
+
+export const updateProduct = (product)=>{
+    return{
+        type:UPDATEPRODUCT,
+        payload:product
     }
 }

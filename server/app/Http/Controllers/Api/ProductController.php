@@ -76,10 +76,44 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
-    }
+        try{
+
+            $request->validate(
+                [
+                "category"=> "required|exists:categories,id",
+                "price"=>"required",
+                "name"=>"required",
+                "decription"=>"string"
+    
+            ]);
+            $product = Product::find($request->id);
+            $product->name = $request->name;
+            $product->category_id = $request->category;
+            $product->price = $request->price;
+            $product->description = $request->description;
+            $product->save();
+            if($request->hasFile("image")){
+                $request->validate([
+            "image"=>"required|mimes:png,jpg,webp",
+
+                ]);
+                $newImageName = Str::random(6).".".$request->file("image")->getClientOriginalExtension();
+                $save = $request->file('image')->move(public_path("products"), $newImageName);
+                if($save){
+                    $product->image = $newImageName;
+                    $product->save();
+                    return response(["message"=>"product created with success","product"=>new ProductResource($product)]);
+                }
+            }
+            return response(["message"=>"product updated with success","product"=>new ProductResource($product)]);
+
+
+           
+        }catch(ValidationException $e){
+            return response( $e->errors(),500);
+        }       }
 
     /**
      * Remove the specified resource from storage.

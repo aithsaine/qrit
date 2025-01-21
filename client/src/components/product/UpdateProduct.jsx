@@ -49,11 +49,6 @@ export default function UpdateProductModal({
 
       if (data) {
         dispatch(updateProduct(data.product));
-        setName("");
-        setDescription("");
-        setPrice("");
-        setImage(null);
-        setCategory("");
         setVisible(false);
         return toast.success(data.message);
       }
@@ -208,11 +203,14 @@ export default function UpdateProductModal({
                     id="image"
                     name="image[]"
                     customUpload
+                    contentClassName="dark:bg-[#000022]"
+                    headerStyle={{ backgroundColor: "transparent" }}
                     accept="image/*"
                     auto
                     chooseLabel="Choisir une image"
-                    className="text-black w-full rounded-lg  border p-2  shadow-sm dark:bg-[#000022] dark:text-white"
+                    className="text-black w-full rounded-lg h-[50px]  border p-2 overflow-hidden  shadow-sm dark:bg-[#000022] dark:text-white"
                     uploadHandler={onUpload}
+                    
                   />
                 </div>
 

@@ -200,6 +200,8 @@ export default function NewProductModal() {
                     customUpload
                     accept="image/*"
                     auto
+                    contentClassName="dark:bg-[#000022]"
+                    headerStyle={{ backgroundColor: "transparent" }}
                     chooseLabel="Choisir une image"
                     className="w-full dark:bg-[#000022] border  dark:text-white text-black  rounded-lg p-2 shadow-sm"
                     uploadHandler={onUpload}

@@ -14,7 +14,6 @@ export default function SignIn() {
       e.preventDefault()
       try {
           setWait(true);
-          await csrf()
           const resp = await api.post("api/login", {
               email, password
           })

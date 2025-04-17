@@ -21,8 +21,8 @@ class AdminFactory extends Factory
         $user =
         new User();
         $user->name = "qrit admin";
-        $user->email = "qrit-bwise@admin.ma";
-        $user->password =  Hash::make("qrit-bwise");
+        $user->email = "admin@qrit.ma";
+        $user->password =  Hash::make("admin");
         $user->save();
        
     

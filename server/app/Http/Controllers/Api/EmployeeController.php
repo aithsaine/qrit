@@ -21,7 +21,7 @@ class EmployeeController extends Controller
     public function index()
     {
         //
-        
+
     }
 
     /**
@@ -37,36 +37,36 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+        try {
             $request->validate([
-                "cin"=>"required",
-                "phone"=>"required",
-                "birthday"=>"required",
-                "hiring_date"=>"required",
-                "address"=>"required",
-                "firstname"=>"required",
-                "lastname"=>"required"
+                "cin" => "required",
+                "phone" => "required",
+                "birthday" => "required",
+                "hiring_date" => "required",
+                "address" => "required",
+                "firstname" => "required",
+                "lastname" => "required"
             ]);
-
             $user = new User();
-            $fname = trim((str_replace(" ","",$request->firstname)));
-            $lname = trim((str_replace(" ","",$request->lastname)));
-            $user->name = $request->firstname." ".$request->lastname;
-            $user->email = strtolower($fname)."-".strtolower($lname)."@bwise.ma";
-            $user->password = Hash::make("qrit-bwise");
+            $fname = trim((str_replace(" ", "", $request->firstname)));
+            $lname = trim((str_replace(" ", "", $request->lastname)));
+            $user->name = $request->firstname . " " . $request->lastname;
+            $user->email = strtolower($fname) . "-" . strtolower($lname) . "@qrit.ma";
+            $user->password = Hash::make("qrit-ismail");
             $user->save();
             $employee = new Employee();
             $employee->user_id = $user->id;
             $employee->cin = $request->cin;
             $employee->phone = $request->phone;
-            $employee->birthday = $request->birthday;
-            $employee->hiring_date = $request->hiring_date;
+            $birthday = date('Y-m-d', strtotime($request->birthday)); // or from ISO string
+            $hiring_date = date('Y-m-d', strtotime($request->hiring_date));
+            $employee->birthday = $birthday;
+            $employee->hiring_date = $hiring_date;
             $employee->address = $request->address;
             $employee->save();
-            return response(["message"=>"employee added with success","employee"=>new EmployeeResource($employee)]);
-        }catch(ValidationException $error)
-        {
-            return response($error->errors(),500);
+            return response(["message" => "employee added with success", "employee" => new EmployeeResource($employee)]);
+        } catch (ValidationException $error) {
+            return response($error->errors(), 500);
         }
     }
 
@@ -99,9 +99,9 @@ class EmployeeController extends Controller
      */
     public function destroy(string $id)
     {
-         try {
-            $employee = Employee::findOrFail($id); 
-            $employee->delete(); 
+        try {
+            $employee = Employee::findOrFail($id);
+            $employee->delete();
             return response(["message" => "Employee deleted successfully"]);
         } catch (ModelNotFoundException $e) {
             return response(["error" => "Employee not found"], 404);
@@ -110,10 +110,11 @@ class EmployeeController extends Controller
         }
     }
 
-    public function getOrdersForEmployeeTables($id){
-    $employee = User::find($id)->employee;
-    $tables = $employee->tables()->get("id");
-    $orders = Order::whereIn("table_id",$tables)->get();
-        return response(["orders"=>OrderResource::collection($orders)]);
+    public function getOrdersForEmployeeTables($id)
+    {
+        $employee = User::find($id)->employee;
+        $tables = $employee->tables()->get("id");
+        $orders = Order::whereIn("table_id", $tables)->get();
+        return response(["orders" => OrderResource::collection($orders)]);
     }
 }

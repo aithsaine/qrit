@@ -10,13 +10,13 @@ import api from "helpers/api";
 import { toast } from "sonner";
 
 const Sidebar = ({ open, onClose }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [qrData, setQrData] = useState("");
   const [scanned, setScanned] = useState(false); // Flag to prevent multiple requests
   const auth = useSelector((state) => state?.auth);
   const qrCodeRef = useRef(null);
   const scannerRef = useRef(null);
-
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
   useEffect(() => {
     const initializeScanner = async () => {
       // Initialize the scanner instance
@@ -86,7 +86,8 @@ const Sidebar = ({ open, onClose }) => {
       <div
         className={`sm:none duration-175 linear fixed !z-50 flex min-h-full flex-col bg-white pb-10 shadow-2xl shadow-white/5 transition-all dark:!bg-navy-800 dark:text-white md:!z-50 lg:!z-50 xl:!z-0 ${
           open ? "translate-x-0" : "-translate-x-96"
-        }`}
+        }`
+      }
       >
         <span
           className="absolute top-4 right-4 block cursor-pointer xl:hidden"
@@ -135,7 +136,7 @@ const Sidebar = ({ open, onClose }) => {
             >
               <HiX />
             </button>
-            <div id="qrCodeReader" ref={qrCodeRef} style={{ width: "100%" }} />
+            <div id="qr-reader" ref={qrCodeRef} style={{ width: "100%" }} />
             <p className="text-center mt-2">Scan a QR code to send the order</p>
           </div>
         </div>

@@ -23,6 +23,7 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm }) {
             onClick={onConfirm}
             className="w-full py-2 px-4 rounded-lg text-white bg-red-600 hover:bg-red-700 transition-colors"
           >
+            
             Confirm
           </button>
         </div>

@@ -9,3 +9,26 @@ server/.env
 server/storage/
 server/node_modules/
 server/public/storage/
+
+#for api using flask and venv
+api/venv/
+api/__pycache__/
+api/*.pyc
+api/*.pyo
+api/*.pyd
+api/*.db
+api/*.sqlite3
+api/.env
+api/.venv
+api/.pytest_cache/
+api/.mypy_cache/
+api/.coverage
+api/.pytest_cache/
+api/.mypy_cache/
+# For Python (Flask)    
+api/__pycache__/
+api/*.pyc
+api/*.pyo
+api/*.pyd
+api/*.db
+api/*.sqlite3

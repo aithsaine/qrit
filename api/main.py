@@ -8,6 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 import joblib
 
+
 # Paths to your CSV files
 DATASET_1 = 'FOOD-DATA-GROUP1.csv'
 DATASET_2 = 'FOOD-DATA-GROUP2.csv'

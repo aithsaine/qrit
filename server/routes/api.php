@@ -4,6 +4,7 @@ use App\Http\Middleware\LastSeen;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FlaskapiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::post('/chatbot/suggest', [FlaskapiController::class, 'ask']);
+
 
 Route::middleware(['auth:sanctum',LastSeen::class])->get('/user', function (Request $request) {
     return response(["user"=>new UserResource( $request->user())]);

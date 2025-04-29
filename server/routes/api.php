@@ -17,7 +17,7 @@ use App\Http\Controllers\FlaskapiController;
 |
 */
 
-Route::post('/chatbot/suggest', [FlaskapiController::class, 'ask']);
+Route::post('/generate', [FlaskapiController::class, 'generateRecipe']);
 
 
 Route::middleware(['auth:sanctum',LastSeen::class])->get('/user', function (Request $request) {

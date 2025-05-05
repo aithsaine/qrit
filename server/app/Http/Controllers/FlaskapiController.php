@@ -15,7 +15,7 @@ class FlaskapiController extends Controller
         try {
             $flaskUrl = env('FLASK_API_URL');
 
-            $response = Http::timeout(10)->post($flaskUrl, [
+            $response = Http::timeout(100)->post($flaskUrl, [
                 'goal' => $request->input('goal'),
                 'max_length' => $request->input('max_length', 300),
                 'temperature' => $request->input('temperature', 0.7),
